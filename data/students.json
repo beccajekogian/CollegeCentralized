@@ -1,20 +1,28 @@
-{student_name{
-  userName:
-  email:
-  college_list {
-    collegeName{
+{
+  student_name {
+    displayName:
+    email:
+    collegeList {
+      collegeName {
 
-      collegeName:
-      collegeName_supplementOne {
-        prompt:
-        conent:
-        wordMax:
-        wordMin:
-        wordCount:
+        collegeName:
+        collegeName_supplementOne {
+          prompt:
+          conent:
+          wordMax:
+          wordMin:
+          wordCount:
+        }
+        collegeName_supplementTwo {
+          prompt:
+          conent:
+          wordMax:
+          wordMin:
+          wordCount:
+        }
       }
     }
-  }
 
-}
+  }
 
 }

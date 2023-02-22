@@ -1,0 +1,64 @@
+<!-- <%- include('../partials/header', {title:"College details"}) -%> -->
+
+<!doctype html>
+<html lang="en">
+
+
+<head>
+  <meta charset="utf-8" />
+  <title>Create College</title>
+  <meta name="author" content="Becca + Aarav">
+  <meta name="description" content="A digital version of the classic YahtzE dice game">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+</head>
+
+<body>
+  <header>
+    <h2>Add a college</h2>
+  </header>
+  <br>
+
+  <form action="/opponents" method="POST">
+    <label for="collegeName">College Name:</label>
+    <input type="text" id="college" name="collegeName" value=""><br>
+
+
+    <label for="supplementNumber">Number of supplements:</label>
+    <input type="text" id="number" name="supplementNumber" value=""><br>
+
+    <label for="supplementOnePromt">supplement 1 prompt</label>
+    <input type="text" id="prompt" name="supplementOnePromt" value=""><br>
+
+    <label for="supplementOneMin">supplement 1 word min</label>
+    <input type="text" id="wordMin" name="supplementOneMin" value=""><br>
+
+    <label for="supplementOneMax">supplement 1 word max</label>
+    <input type="text" id="wordMax" name="supplementOneMax" value=""><br>
+
+
+    <label for="supplementTwoPromt">supplement 2 prompt</label>
+    <input type="text" id="prompt" name="supplementTwoPromt" value=""><br>
+
+    <label for="supplementOneMin">supplement 2 word min</label>
+    <input type="text" id="wordMin" name="supplementTwoMin" value=""><br>
+
+    <label for="supplementOneMax">supplement 2 word max</label>
+    <input type="text" id="wordMax" name="supplementTwoMax" value=""><br>
+
+    <br><br>
+
+    <input type="submit" value="Add College Info!">
+
+  </form>
+
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</body>
+
+</html>
+
+
+
+<!-- <%- include('../partials/footer') -%> -->
