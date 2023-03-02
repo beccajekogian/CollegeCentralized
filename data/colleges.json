@@ -1,0 +1,27 @@
+{
+ college: {
+   collegeName: ,
+   applicationTypes: [EA, ED, Reg],
+   dueDates{
+     EA: dueDate,
+     ED: dueDate,
+     Reg: dueDate
+   }
+
+   supplements: [
+    {
+      prompt: ,
+      wordMax: ,
+      wordMin:
+    }
+    {
+      prompt: ,
+      wordMax: ,
+      wordMin:
+    }
+
+    ]
+
+  }
+
+}

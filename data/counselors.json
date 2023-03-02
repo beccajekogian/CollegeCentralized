@@ -1,0 +1,20 @@
+{
+  counselor: {
+    email:
+    lastName:
+    toDoList:[
+      studentName:
+      collegeName: 
+      promt:
+      progress:
+      content:
+      wordMax:
+      wordMin:
+      wordCount:
+      dateReceived:
+
+
+      }
+    }
+  }
+}
