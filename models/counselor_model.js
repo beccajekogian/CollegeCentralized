@@ -57,30 +57,40 @@ exports.createPlayer =  function (playerID, playerDisplayName){
   }
 }
 
-exports.updatePlayer =  function (playerName, results){
-  let allPlayers = JSON.parse(fs.readFileSync(__dirname+'/../data/players.json'));
+exports.updateToDOList =  function (counselorName, studentName, collegeName, supplementIndex){
+  let counselors = JSON.parse(fs.readFileSync(__dirname+'/../data/counselors.json'));
+  let students = JSON.parse(fs.readFileSync(__dirname+'/../data/students.json'));
 
-/*  if(outcome=="player") allPlayers[playerName]["win"]++;
-  else if(outcome=="player") allPlayers[playerName]["lose"]++;
-  else allPlayers[playerName]["tie"]++;
-*/
+  let supplement = students[studentName]["collegeList"][collegeName[supplementIndex]];
 
-  fs.writeFileSync(__dirname+'/../data/players.json', JSON.stringify(allPlayers));
-}
-
-exports.removePlayer = function(playerID){
-  let allPlayers = JSON.parse(fs.readFileSync(__dirname+'/../data/players.json'));
-  if(allPlayers[playerID]) delete allPlayers[playerID];
-  fs.writeFileSync(__dirname+'/../data/players.json', JSON.stringify(allPlayers));
-}
-
-exports.addGame = function(playerID, results){
-  let allPlayers = JSON.parse(fs.readFileSync(__dirname+'/../data/players.json'));
-  if(allPlayers[playerID]){
-    if(results["outcome"]=="tie") allPlayers[playerID]["tie"]++;
-    else if(results["outcome"]=="player") allPlayers[playerID]["win"]++;
-    else allPlayers[playerID]["lose"]++;
-    allPlayers[playerID]["games"].push(results["gameID"]);
+  let newSupplement={
+    "studnetName": studentName,
+    "collegeName": collegeName,
+    "prompt": supplement.prompt,
+    "content": supplement.content,
+    "wordMin": supplement.wordMin,
+    "wordMax": supplement.wordMax,
+    "wordCount": supplement.wordCount,
+    "dateReceived": new Date()
   }
-  fs.writeFileSync(__dirname+'/../data/players.json', JSON.stringify(allPlayers));
+
+  counselors[counselorName][toDoList].push(newSupplement);
+  fs.writeFileSync(__dirname+'/../data/counselors.json', JSON.stringify(counselors));
 }
+// 
+// exports.removePlayer = function(playerID){
+//   let allPlayers = JSON.parse(fs.readFileSync(__dirname+'/../data/players.json'));
+//   if(allPlayers[playerID]) delete allPlayers[playerID];
+//   fs.writeFileSync(__dirname+'/../data/players.json', JSON.stringify(allPlayers));
+// }
+//
+// exports.addGame = function(playerID, results){
+//   let allPlayers = JSON.parse(fs.readFileSync(__dirname+'/../data/players.json'));
+//   if(allPlayers[playerID]){
+//     if(results["outcome"]=="tie") allPlayers[playerID]["tie"]++;
+//     else if(results["outcome"]=="player") allPlayers[playerID]["win"]++;
+//     else allPlayers[playerID]["lose"]++;
+//     allPlayers[playerID]["games"].push(results["gameID"]);
+//   }
+//   fs.writeFileSync(__dirname+'/../data/players.json', JSON.stringify(allPlayers));
+// }

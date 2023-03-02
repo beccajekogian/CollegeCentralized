@@ -7,41 +7,30 @@ exports.getAllColleges =  function() {
   return allColleges;
 }
 
-exports.getGame =  function(collegeName) {
+exports.getCollege =  function(collegeName) {
   let allColleges = JSON.parse(fs.readFileSync(__dirname+'/../data/colleges.json'));
   return allColleges[collgeName];
 }
-// 
-// exports.addCollege =  function(opponent, playerThrow) {
-//   let opponentThrowChoices=["Paper", "Rock", "Scissors"];
-//   let opponentThrow = opponentThrowChoices[Math.floor(Math.random() * 3)];
-//
-//   if(playerThrow===opponentThrow){
-//     outcome= "tie";
-//   }else if(playerThrow==="Paper"){
-//     if(opponentThrow=="Scissors") outcome= "opponent";
-//     else outcome= "player";
-//   }else if(playerThrow==="Scissors"){
-//     if(opponentThrow=="Rock") outcome= "opponent";
-//     else outcome= "player";
-//   }else{
-//     if(opponentThrow=="Paper") outcome= "opponent";
-//     else outcome="player";
-//   }
-//   let allGames = JSON.parse(fs.readFileSync(__dirname+'/../data/games.json'));
-//
-//   let results={};
-//   results["opponentName"]=opponent;
-//   results["opponentThrow"]=opponentThrow;
-//   results["playerThrow"]=playerThrow;
-//   results["outcome"] = outcome;
-//   results["date"] = new Date();
-//
-//   let newID = uuid.v1();
-//   allGames[newID] = results;
-//   results["gameID"] = newID;
-//
-//   fs.writeFileSync(__dirname+'/../data/games.json', JSON.stringify(allGames));
-//
-//   return results;
-// }
+
+
+exports.createCollege = function(collegeName){
+  let allColleges = JSON.parse(fs.readFileSync(__dirname+'/../data/colleges.json'));
+  allColleges[collgeName] = {
+
+  }
+
+  fs.writeFileSync(__dirname+'/../data/colleges.json', JSON.stringify(allColleges));
+}
+
+exports.createSupplement = function(collegeName, prompt, wordMin, wordMax){
+  let allColleges = JSON.parse(fs.readFileSync(__dirname+'/../data/colleges.json'));
+  let newSupplement = {
+    "prompt": prompt,
+    "wordMin": wordMin,
+    "wordMax": wordMax
+  }
+  allColleges[collgeName].push(newSupplement);
+  fs.writeFileSync(__dirname+'/../data/colleges.json', JSON.stringify(allColleges));
+
+}
+  

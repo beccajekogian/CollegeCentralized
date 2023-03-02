@@ -2,12 +2,18 @@
   counselor: {
     email:
     lastName:
-    toDo {
-      student_college_supplement{
+    toDoList:[
+      studentName:
+      collegeName: 
+      promt:
+      progress:
+      content:
+      wordMax:
+      wordMin:
+      wordCount:
+      dateReceived:
 
-        progress:
-        dateReceived:
-        
+
       }
     }
   }
