@@ -5,41 +5,67 @@ const express = require('express'),
   const College = require('../models/college_model');
   const Counselor = require('../models/counselor_model');
 
-router.get('/games/new', function(request, response) {
-    let opponents = Opponent.getOpponents();
+//this  should be the counselor that  is logged in
+router.get('/counselors/:counselorName', function(request, response) {
+    let counselorName = request.query.counselorName;
+    let students = Counselor.getStudents(counselorName);
     response.status(200);
     response.setHeader('Content-Type', 'text/html')
-    response.render("game/play", {
-      data: opponents
+    response.render("counselor/studentsList", {
+      data: students
     });
 });
 
-router.get('/games/:id', function(request, response) {
-    let opponentName = request.query.opponent;
-    let playerThrow = request.query.throw;
+router.get('/counselors/:counselorName/:studentName', function(request, response) {
+    let counselorName = request.query.counselorName;
+    let studentName = request.query.studentName;
 
-    if(Opponent.isOpponent(opponentName)){
-      let results = Game.playGame(opponentName, playerThrow);
-      Opponent.updateOpponent(opponentName, results["outcome"]);
-      results["photo"] = Opponent.getOpponent(opponentName)["photo"];
-      response.status(200);
-      response.setHeader('Content-Type', 'text/html')
-      response.render("game/results", {
-        data: results
-      });
-    }else{
-      response.redirect('/error?code=404');
-    }
+    let collgeList = Students.getCollegeList(studentName);
+
+    response.status(200);
+    response.setHeader('Content-Type', 'text/html')
+    response.render("counselor/studentDetails", {
+      data: collgeList
+    });
 });
 
-router.get('/games', function(request, response) {
-  let gamesArray = Game.getSortedGames();
+router.get('/counselors/:counselorName/:studentName/collegeList/:collegeName', function(request, response) {
+    let counselorName = request.query.counselorName;
+    let studentName = request.query.studentName;
+    let collegeName = request.query.collegeName;
 
-  response.status(200);
-  response.setHeader('Content-Type', 'text/html')
-  response.render("game/recentGames",{
-    games: gamesArray
-  });
+    let supplements = Colleges.getSupplements(collegeName);
+
+    response.status(200);
+    response.setHeader('Content-Type', 'text/html')
+    response.render("counselor/collegeDetails", {
+      data: supplements
+    });
+});
+
+router.get('/counselors/:counselorName/:studentName/collegeList/:collegeName/:supplementID', function(request, response) {
+    response.status(200);
+    response.setHeader('Content-Type', 'text/html')
+    response.render("colleges/supplementDetails");
+});
+
+
+router.post('/counselors/:counselorName/:studentName/collegeList/:collegeName/:supplementID', function(request, response) {
+  let counselorName = request.query.counselorName;
+  let studentName = request.query.studentName;
+  let collegeName = request.query.collegeName;
+  let supplementID = request.query.supplementID;
+
+    let content = request.body.supplementContent;
+
+    if(content){
+      Counselor.updateSupplement(supplementID, content);
+      response.status(200);
+      response.setHeader('Content-Type', 'text/html')
+      response.redirect("/counselors/"+counselorName+ "/" +studentName+ "/collegeList/" +collegeName+ "/" +supplementID);
+    }else{
+      response.redirect('/error?code=400');
+    }
 });
 
 module.exports = router;

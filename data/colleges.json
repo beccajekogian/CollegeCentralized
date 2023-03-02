@@ -2,25 +2,25 @@
  college: {
    collegeName: ,
    applicationTypes: [EA, ED, Reg],
-   dueDates{
+   dueDates: {
      EA: dueDate,
      ED: dueDate,
      Reg: dueDate
    }
 
-   supplements: [
-    {
+   supplements: {
+    supplementID: {
       prompt: ,
       wordMax: ,
       wordMin:
     }
-    {
+    supplementID: {
       prompt: ,
       wordMax: ,
       wordMin:
     }
 
-    ]
+  }
 
   }
 

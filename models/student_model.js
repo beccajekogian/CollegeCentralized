@@ -29,13 +29,11 @@ exports.getStudents = function(){
 
 exports.getStudent = function(studentName){
   let students = JSON.parse(fs.readFileSync(__dirname+'/../data/students.json'));
-
   return students[studentName];
 }
 
 exports.getCollegeList = function(studentName){
   let students = JSON.parse(fs.readFileSync(__dirname+'/../data/students.json'));
-
   return students[studentName][collegeList];
 }
 
@@ -53,7 +51,7 @@ exports.addCollege =  function (studentName, collegeName){
 exports.updateSupplements =  function (studentName, supplementIndex, supplementContent){
   let students = JSON.parse(fs.readFileSync(__dirname+'/../data/students.json'));
 
-  students[studentName]["collegeList"][collegeName]["content"] = supplementContent;
+  students[studentName]["collegeList"][collegeName[supplementIndex]]["content"] = supplementContent;
 
   fs.writeFileSync(__dirname+'/../data/students.json', JSON.stringify(students));
 }

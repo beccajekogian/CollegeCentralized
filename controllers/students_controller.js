@@ -5,12 +5,13 @@ const express = require('express'),
   const College = require('../models/college_model');
   const Counselor = require('../models/counselor_model');
 
-router.get('/games/new', function(request, response) {
-    let opponents = Opponent.getOpponents();
+router.get('/students/:studentName/collegeList', function(request, response) {
+  let studentName = request.query.studentName;
+    let list = Student.getCollegeList(student);
     response.status(200);
     response.setHeader('Content-Type', 'text/html')
-    response.render("game/play", {
-      data: opponents
+    response.render("student/colegeList", {
+      data: list
     });
 });
 

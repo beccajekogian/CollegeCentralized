@@ -1,23 +1,17 @@
 {
   studentName {
-    displayName: "Becca",
-    email: "  ",
-    counselor: "Jakobs",
-    collegeList: {
-      collegeName: [
-        {
-          prompt:
-          content:
-          wordMax:
-          wordMin:
-          wordCount:
-        }, {
-          prompt:
-          content:
-          wordMax:
-          wordMin:
-          wordCount:
-        }
-      ]
+    "studentName": "Becca",
+    "email": "  ",
+    "counselor": "Jakobs",
+    "collegeList": {
+      collegeName: {
+        "supplementID": {
+          "prompt":  ,
+          "content": ,
+          "wordMax":  ,
+          "wordMin": ,
+          "wordCount":
+        },
+      }
   }
 }

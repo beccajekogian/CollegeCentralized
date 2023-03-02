@@ -25,19 +25,7 @@ router.get('/colleges/:collegeName', function(request, response) {
     response.render("colleges/collegeDetails", {
       data: college
     });
-
 });
-
-router.get('/games', function(request, response) {
-  let gamesArray = Game.getSortedGames();
-
-  response.status(200);
-  response.setHeader('Content-Type', 'text/html')
-  response.render("game/recentGames",{
-    games: gamesArray
-  });
-});
-
 
 
 router.get('/colleges/new', function(request, response) {
@@ -46,38 +34,44 @@ router.get('/colleges/new', function(request, response) {
     response.render("colleges/collegeCreate");
 });
 
+router.post('/colleges', function(request, response) {
+    let collegeName = request.body.collegeName;
+
+    if(collegeName){
+      College.createCollege(collgeName);
+      response.status(200);
+      response.setHeader('Content-Type', 'text/html')
+      response.redirect("/colleges/"+collegeName);
+    }else{
+      response.redirect('/error?code=400');
+    }
+});
 
 //create supplement
 router.get('/colleges/:collegeName/new', function(request, response) {
-    response.status(200);
-    response.setHeader('Content-Type', 'text/html')
-    response.render("colleges/createSupplement"); // fix this
-});
 
+      let collegeName = request.query.collegeName;
 
-router.post('/colleges', function(request, response) {
-    let collegeName = request.body.collegeName;
-    // let prompt = request.body.prompt;
-    // let wordMin =
+      let college = College.getCollege(collegeName);
 
-    if(collegeName){
-      College.createCollege(collgeName);
       response.status(200);
       response.setHeader('Content-Type', 'text/html')
-      response.redirect("/colleges/"+collegeName);
-    }else{
-      response.redirect('/error?code=400');
-    }
+      response.render("/colleges/createSupplement", {
+        college: college
+      });
+
+  //  response.render("/colleges/"+collegeName+"/createSupplement"); // fix this
 });
 
-router.post('/colleges/collegeName', function(request, response) {
+router.post('/colleges/:collegeName', function(request, response) {
     let collegeName = request.body.collegeName;
-    let supplementID =
+    let supplementID = request.body.supplementID;
     let prompt = request.body.prompt;
-    let wordMin =
+    let wordMin =  request.body.wordMin;
+    let wordMax =  request.body.wordMax;
 
-    if(collegeName){
-      College.createCollege(collgeName);
+    if(collegeName && supplementID && prompt && wordMin && wordMax){
+      College.createSupplement(collegeName, supplementID, prompt, wordMin, wordMax);
       response.status(200);
       response.setHeader('Content-Type', 'text/html')
       response.redirect("/colleges/"+collegeName);
@@ -86,6 +80,5 @@ router.post('/colleges/collegeName', function(request, response) {
     }
 });
 
-module.exports = router;
 
 module.exports = router;

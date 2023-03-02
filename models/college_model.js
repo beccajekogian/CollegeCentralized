@@ -22,15 +22,19 @@ exports.createCollege = function(collegeName){
   fs.writeFileSync(__dirname+'/../data/colleges.json', JSON.stringify(allColleges));
 }
 
-exports.createSupplement = function(collegeName, prompt, wordMin, wordMax){
+exports.createSupplement = function(collegeName, supplementID, prompt, wordMin, wordMax){
   let allColleges = JSON.parse(fs.readFileSync(__dirname+'/../data/colleges.json'));
   let newSupplement = {
     "prompt": prompt,
     "wordMin": wordMin,
     "wordMax": wordMax
   }
-  allColleges[collgeName].push(newSupplement);
+  allColleges[collgeName]["supplements"][supplementID] = newSupplement;
   fs.writeFileSync(__dirname+'/../data/colleges.json', JSON.stringify(allColleges));
-
 }
-  
+
+
+exports.getSupplements = function(collegeName){
+  let allColleges = JSON.parse(fs.readFileSync(__dirname+'/../data/colleges.json'));
+  return allColleges[collgeName]["supplements"];
+}
