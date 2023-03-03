@@ -46,6 +46,7 @@ exports.addCollege =  function (studentName, collegeName){
   }
   students[studentName][collegeList][collegeName] = newCollege;
   fs.writeFileSync(__dirname+'/../data/students.json', JSON.stringify(students));
+  return students[studentName][collegeList];
 }
 
 exports.updateSupplements =  function (studentName, supplementIndex, supplementContent){

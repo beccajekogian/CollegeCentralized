@@ -43,12 +43,11 @@ router.get('/counselors/:counselorName/:studentName/collegeList/:collegeName', f
     });
 });
 
-router.get('/counselors/:counselorName/:studentName/collegeList/:collegeName/:supplementID', function(request, response) {
+router.get('/counselors/:counselorName/:studentName/collegeList/:collegeName/:supplementID/edit', function(request, response) {
     response.status(200);
     response.setHeader('Content-Type', 'text/html')
     response.render("colleges/supplementDetails");
 });
-
 
 router.post('/counselors/:counselorName/:studentName/collegeList/:collegeName/:supplementID', function(request, response) {
   let counselorName = request.query.counselorName;
@@ -62,8 +61,8 @@ router.post('/counselors/:counselorName/:studentName/collegeList/:collegeName/:s
       Counselor.updateSupplement(supplementID, content);
       response.status(200);
       response.setHeader('Content-Type', 'text/html')
-      response.redirect("/counselors/"+counselorName+ "/" +studentName+ "/collegeList/" +collegeName+ "/" +supplementID);
-    }else{
+      response.redirect("/counselors/"+counselorName+ "/" +studentName+ "/collegeList/" +collegeName+ "/" + supplementID);
+    } else{
       response.redirect('/error?code=400');
     }
 });
