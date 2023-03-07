@@ -18,7 +18,7 @@ function loggedIn(request, response, next) {
 router.get('/students', loggedIn, function(request, response) {
   let studentName = request.user;
   console.log(studentName);
-    let list = Student.getCollegeList(student);
+    let list = Student.getCollegeList(studentName);
     response.status(200);
     response.setHeader('Content-Type', 'text/html')
     response.render("student/collegeList", {
