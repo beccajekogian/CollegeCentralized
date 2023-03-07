@@ -2,7 +2,7 @@
 
 <h2>College: </h2>
 
-<dl>
+<!-- <dl>
 
     <dt>Supplement 1: </dt>
       <dd>- Promt: </dd>
@@ -14,8 +14,9 @@
       <dd>- Word Min: </dd>
       <dd>- Word Max: </dd>
 
-</dl>
+</dl> -->
 
+for (supplement in supplements){
 <div id="accordion">
   <div class="card">
     <div class="card-header" id="headingOne">
@@ -28,14 +29,14 @@
 
     <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
       <div class="card-body">
-        <h6 class="card-subtitle mb-2 text-muted">wordMin-wordMax</h6>
-        <p class="card-text">essay</p>
-        <a href="#" class="card-link">supplementLink</a>
+        <h6 class="card-subtitle mb-2 text-muted"><%=supplements.supplement.wordMin><% to ><%=supplements.supplement.wordMax></h6>
+        <p class="card-text"></p>
+        <a href="student/:collegeName/:supplements[supplement]" class="card-link">link to supplement</a>
       </div>
     </div>
   </div>
 </div>
 
-
+}
 
 <%- include('../partials/footer') -%>

@@ -37,6 +37,15 @@ exports.getCollegeList = function(studentName){
   return students[studentName][collegeList];
 }
 
+exports.getSupplementDetails = function(studentName, collegeName){
+  let students = JSON.parse(fs.readFileSync(__dirname+'/../data/students.json'));
+  let colleges = JSON.parse(fs.readFileSync(__dirname+'/../data/colleges.json'));
+
+  let supplements = students[studentName]["collegeList"][collegeName][supplements]
+
+  return supplements
+}
+
 exports.addCollege =  function (studentName, collegeName){
   let students = JSON.parse(fs.readFileSync(__dirname+'/../data/students.json'));
   let colleges = JSON.parse(fs.readFileSync(__dirname+'/../data/colleges.json'));

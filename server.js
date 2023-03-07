@@ -12,9 +12,11 @@ app.use(express.static('public')); //specify location of static assests
 app.set('views', __dirname + '/views'); //specify location of templates
 app.set('view engine', 'ejs'); //specify templating library
 
-// app.use(require('./controllers/index'));
-// app.use(require('./controllers/game_controller'));
-// app.use(require('./controllers/opponent_controller'));
+app.use(require('./controllers/index'));
+app.use(require('./controllers/students_controller'));
+app.use(require('./controllers/counselors_controller'));
+app.use(require('./controllers/colleges_controller'));
+
 
 app.use("", function(request, response) {
   response.redirect('/error?code=400');

@@ -3,9 +3,11 @@ const express = require('express'),
 
 const Student = require('../models/student_model');
 const Counselor = require('../models/counselor_model');
+const College = require('../models/college_model');
 
 
 router.get('/', function(request, response) {
+  
   console.log(request.user); //Passport adds user to the Request object if loggedIn
   //console.log(request.user._json.email); //Passport adds user to the Request object if loggedIn
   console.log(request.headers); //Encrypted session info is sent as a request header

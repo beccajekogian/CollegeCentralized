@@ -12,7 +12,6 @@ exports.getCollege =  function(collegeName) {
   return allColleges[collgeName];
 }
 
-
 exports.createCollege = function(collegeName){
   let allColleges = JSON.parse(fs.readFileSync(__dirname+'/../data/colleges.json'));
   allColleges[collgeName] = {

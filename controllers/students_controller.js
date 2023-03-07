@@ -17,6 +17,7 @@ function loggedIn(request, response, next) {
 
 router.get('/students/:studentName', loggedIn, function(request, response) {
   let studentName = request.user;
+  console.log(studentName);
     let list = Student.getCollegeList(student);
     response.status(200);
     response.setHeader('Content-Type', 'text/html')
@@ -33,7 +34,6 @@ router.get('/students/:studentName/new', loggedIn, function(request, response) {
     response.setHeader('Content-Type', 'text/html')
     response.render("student/newCollegeList", {
       user: request.user,
-
       data: colleges
     });
 });
@@ -48,7 +48,7 @@ router.post('/students/:studentName', loggedIn, function(request, response) {
       Student.addCollege(collgeName);
       response.status(200);
       response.setHeader('Content-Type', 'text/html')
-      response.redirect("/student/"+studentName+"/collegeList"{
+      response.redirect("/student/"+studentName+"/collegeList", {
         user: request.user,
       });
     }else{
@@ -56,10 +56,28 @@ router.post('/students/:studentName', loggedIn, function(request, response) {
     }
 });
 
+
+router.get('/students/:studentName/:collegeName', loggedIn, function(request, response) {
+  let studentName = request.user;
+  let collegeName = request.query.collegeName;
+  let supplements = Student.getSupplementDetails(studentName, collegeName);
+
+    if(content){
+      Student.updateSupplement(supplementID, content);
+      response.status(200);
+      response.setHeader('Content-Type', 'text/html')
+      response.redirect("/students/"+studentName+ "/" +collegeName, {
+        user: request.user,
+        supplements: supplements,
+        college: collegeName
+      });
+    } else{
+      response.redirect('/error?code=400');
+    }
+});
+
 router.get('/students/:studentName/:collegeName/:supplementID/edit', loggedIn, function(request, response) {
   let studentName = request.user;
-  let counselorName = request.query.counselorName;
-  let studentName = request.query.studentName;
   let collegeName = request.query.collegeName;
   let supplementID = request.query.supplementID;
   let content = request.body.supplementContent;
@@ -68,7 +86,7 @@ router.get('/students/:studentName/:collegeName/:supplementID/edit', loggedIn, f
       Student.updateSupplement(supplementID, content);
       response.status(200);
       response.setHeader('Content-Type', 'text/html')
-      response.redirect("/students/"+studentName+ "/" +collegeName+ "/" + supplementID{
+      response.redirect("/students/"+studentName+ "/" +collegeName+ "/" + supplementID,{
         user: request.user,
 
       });
