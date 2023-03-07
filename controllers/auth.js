@@ -10,7 +10,7 @@ const KEYS = require('../config/keys.json');
 let userProfile; //only used if you want to see user info beyond username
 
 const Student = require('../models/student_model');
-
+const Counselor = require('../models/counselor_model');
 router.use(session({
   resave: false,
   saveUninitialized: true,
