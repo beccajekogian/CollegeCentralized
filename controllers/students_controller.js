@@ -15,7 +15,7 @@ function loggedIn(request, response, next) {
 }
 
 
-router.get('/students/:studentName', loggedIn, function(request, response) {
+router.get('/students', loggedIn, function(request, response) {
   let studentName = request.user;
   console.log(studentName);
     let list = Student.getCollegeList(student);
@@ -27,7 +27,7 @@ router.get('/students/:studentName', loggedIn, function(request, response) {
     });
 });
 
-router.get('/students/:studentName/new', loggedIn, function(request, response) {
+router.get('/students/new', loggedIn, function(request, response) {
   let studentName = request.user;
   let colleges = College.getAllColleges();
     response.status(200);
@@ -38,17 +38,18 @@ router.get('/students/:studentName/new', loggedIn, function(request, response) {
     });
 });
 
-router.post('/students/:studentName', loggedIn, function(request, response) {
+router.post('/students', loggedIn, function(request, response) {
     let collegeName = request.body.collegeName;
     let studentName = request.user;
+    let applicationPlan = request.body.applicationPlan;
 
-    let collegeList = Student.getCollegeList(studentName);
+    // let collegeList = Student.getCollegeList(studentName);
 
-    if(collegeName){
-      Student.addCollege(collgeName);
+    if(collegeName && applicationPlan){
+      let collegeList = Student.addCollege(collgeName);
       response.status(200);
       response.setHeader('Content-Type', 'text/html')
-      response.redirect("/student/"+studentName+"/collegeList", {
+      response.redirect("/student/collegeList", {
         user: request.user,
       });
     }else{

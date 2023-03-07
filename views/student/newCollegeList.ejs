@@ -7,8 +7,8 @@
   <form action="/opponents" method="POST">
 
 
-    <label for="school">Pick the college you want to add to your list:</label>
-    <select id="school" name="school">
+    <label for="collegeName">Pick the college you want to add to your list:</label>
+    <select id="collegeName" name="school">
 
       <%for(college in data){%>
       <option value="<%=data[college]%>"><%=data[college]%></option>
@@ -16,6 +16,14 @@
 
     </select>
 
+    <label for="applicationPlan">Choose an application plan</label>
+    <select id="applicationPlan" name="applicationPlan">
+      <option value="EDone">ED I</option>
+      <option value="EDtwo">ED II</option>
+      <option value="EA">Early Action</option>
+      <option value="reg">regular</option>
+
+    </select>
     <br><br>
 
     <input type="submit" value="Add School!">

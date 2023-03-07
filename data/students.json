@@ -1,16 +1,16 @@
 {
   studentName {
     "studentName": "Becca",
-    "email": "  ",
+    "email": "rebecca.jekogian23@trinityschoolnyc.org ",
     "counselor": "Jakobs",
     "collegeList": {
       collegeName: {
         "supplementID": {
-          "prompt":  ,
-          "content": ,
-          "wordMax":  ,
-          "wordMin": ,
-          "wordCount":
+          "prompt": "why us?" ,
+          "content": "hello there are so many",
+          "wordMax":  300,
+          "wordMin": 10,
+          "wordCount": 5
         },
       }
   }

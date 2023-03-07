@@ -63,7 +63,7 @@ router.get('/auth/google/callback',
 
 router.get("/auth/logout", (request, response) => {
   request.logout();
-  let playerID = request.user._json.email;
+  let StudentID = request.user._json.email;
   Student.createStudent(StudentID, StudentID.split('.')[0]);//only creates if not in players.json
   response.redirect('/');
 });
