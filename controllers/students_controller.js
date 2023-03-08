@@ -15,16 +15,25 @@ function loggedIn(request, response, next) {
 }
 
 
-router.get('/students', loggedIn, function(request, response) {
-  let studentName = request.user;
-  console.log(studentName);
-    let list = Student.getCollegeList(studentName);
+router.get('/students', loggedIn, async function(request, response) {
+  let studentName = request.user._json.email;
+  console.log("HI " + studentName);
+
+  let list = await Student.getCollegeList(studentName);
+  try{
+    console.log("yes " + list[0]["collegeName"]);
     response.status(200);
     response.setHeader('Content-Type', 'text/html')
     response.render("student/collegeList", {
       user: request.user,
-      data: list
+      colleges: list
     });
+  }
+  catch (err) {
+         console.error(err);
+    	  weather = ""
+      }
+
 });
 
 router.get('/students/new', loggedIn, function(request, response) {
@@ -40,7 +49,7 @@ router.get('/students/new', loggedIn, function(request, response) {
 
 router.post('/students', loggedIn, function(request, response) {
     let collegeName = request.body.collegeName;
-    let studentName = request.user;
+    let studentName = request.user._json.email;
     let applicationPlan = request.body.applicationPlan;
 
     // let collegeList = Student.getCollegeList(studentName);
@@ -58,27 +67,22 @@ router.post('/students', loggedIn, function(request, response) {
 });
 
 
-router.get('/students/:studentName/:collegeName', loggedIn, function(request, response) {
-  let studentName = request.user;
+router.get('/students/:collegeName', loggedIn, function(request, response) {
+  let studentName = request.user._json.email;
   let collegeName = request.query.collegeName;
   let supplements = Student.getSupplementDetails(studentName, collegeName);
 
-    if(content){
-      Student.updateSupplement(supplementID, content);
-      response.status(200);
-      response.setHeader('Content-Type', 'text/html')
-      response.redirect("/students/"+studentName+ "/" +collegeName, {
-        user: request.user,
-        supplements: supplements,
-        college: collegeName
-      });
-    } else{
-      response.redirect('/error?code=400');
-    }
+  response.status(200);
+  response.setHeader('Content-Type', 'text/html')
+  response.render("student/collegeDetails", {
+    user: request.user,
+    supplements: supplements,
+    college: collegeName
+  });
 });
 
-router.get('/students/:studentName/:collegeName/:supplementID/edit', loggedIn, function(request, response) {
-  let studentName = request.user;
+router.get('/students/:collegeName/:supplementID/edit', loggedIn, function(request, response) {
+  let studentName = request.user._json.email;
   let collegeName = request.query.collegeName;
   let supplementID = request.query.supplementID;
   let content = request.body.supplementContent;
@@ -87,7 +91,7 @@ router.get('/students/:studentName/:collegeName/:supplementID/edit', loggedIn, f
       Student.updateSupplement(supplementID, content);
       response.status(200);
       response.setHeader('Content-Type', 'text/html')
-      response.redirect("/students/"+studentName+ "/" +collegeName+ "/" + supplementID,{
+      response.redirect("/students/" + collegeName+ "/" + supplementID,{
         user: request.user,
 
       });

@@ -1,20 +1,17 @@
 {
-  counselor: {
-    email:
-    lastName:
-    toDoList:[
-      studentName:
-      collegeName: 
-      promt:
-      progress:
-      content:
-      wordMax:
-      wordMin:
-      wordCount:
-      dateReceived:
+  jakobs: {
+    "email": "rebecca.jekogian23@trinityschoolnyc.org",
+    "lastName": "Jekogian",
+    toDoList: {
+      "studentEmail": "rebecca.jekogian23@trinityschoolnyc.org",
+      "collegeName": "Northwestern",
+      "prompt": "why us?",
+      "content": "hey",
+      "wordMax": 300,
+      "wordMin": 10,
+      "wordCount": 1,
+      "dateReceived": "date",
 
-
-      }
     }
   }
 }

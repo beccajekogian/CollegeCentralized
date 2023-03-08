@@ -1,17 +1,21 @@
 {
-  studentName {
-    "studentName": "Becca",
-    "email": "rebecca.jekogian23@trinityschoolnyc.org ",
+  "rebecca.jekogian23@trinityschoolnyc.org": {
+    "displayName": "Becca",
+    "email": "rebecca.jekogian23@trinityschoolnyc.org",
     "counselor": "Jakobs",
     "collegeList": {
-      collegeName: {
-        "supplementID": {
-          "prompt": "why us?" ,
-          "content": "hello there are so many",
-          "wordMax":  300,
-          "wordMin": 10,
-          "wordCount": 5
-        },
+      "Northwestern": {
+        "collegeName": "Northwestern",
+        "supplements": {
+          "101001001010": {
+            "prompt": "why us?" ,
+            "content": "hello there are so many",
+            "wordMax":  300,
+            "wordMin": 10,
+            "wordCount": 5
+          }
       }
+    }
   }
+}
 }
