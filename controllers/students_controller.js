@@ -31,7 +31,6 @@ router.get('/students', loggedIn, async function(request, response) {
   }
   catch (err) {
          console.error(err);
-    	  weather = ""
       }
 
 });
@@ -67,24 +66,50 @@ router.post('/students', loggedIn, function(request, response) {
 });
 
 
-router.get('/students/:collegeName', loggedIn, function(request, response) {
+router.get('/students/:collegeName', loggedIn, async function(request, response) {
   let studentName = request.user._json.email;
-  let collegeName = request.query.collegeName;
-  let supplements = Student.getSupplementDetails(studentName, collegeName);
+  let collegeName = request.params.collegeName;
+  let supplements = await Student.getSupplements(studentName, collegeName);
 
-  response.status(200);
-  response.setHeader('Content-Type', 'text/html')
-  response.render("student/collegeDetails", {
-    user: request.user,
-    supplements: supplements,
-    college: collegeName
-  });
+  try{
+    console.log("nice " + supplements);
+    response.status(200);
+    response.setHeader('Content-Type', 'text/html')
+    response.render("student/collegeDetails", {
+      user: request.user,
+      supplements: supplements,
+      college: collegeName
+    });
+  }
+  catch (err) {
+         console.error(err);
+      }
 });
 
+//fix this and one below
 router.get('/students/:collegeName/:supplementID/edit', loggedIn, function(request, response) {
   let studentName = request.user._json.email;
-  let collegeName = request.query.collegeName;
-  let supplementID = request.query.supplementID;
+  let collegeName = request.params.collegeName;
+  let supplementID = request.params.supplementID;
+  let content = Student.getSupplement(studentName, collegeName, supplementID);
+
+  if(content){
+    Student.updateSupplement(supplementID, content);
+    response.status(200);
+    response.setHeader('Content-Type', 'text/html')
+    response.redirect("/students/" + collegeName + "/" + supplementID,{
+      user: request.user,
+
+    });
+  } else{
+    response.redirect('/error?code=400');
+  }
+});
+
+router.get('/students/:collegeName/:supplementID', loggedIn, function(request, response) {
+  let studentName = request.user._json.email;
+  let collegeName = request.params.collegeName;
+  let supplementID = request.params.supplementID;
   let content = request.body.supplementContent;
 
     if(content){
@@ -99,5 +124,7 @@ router.get('/students/:collegeName/:supplementID/edit', loggedIn, function(reque
       response.redirect('/error?code=400');
     }
 });
+
+
 
 module.exports = router;
