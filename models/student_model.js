@@ -50,8 +50,9 @@ exports.getCollegeList = async function(studentName){
 exports.getSupplementDetails = async function(studentName, collegeName){
   let students = JSON.parse(fs.readFileSync(__dirname+'/../data/students.json'));
   // let colleges = JSON.parse(fs.readFileSync(__dirname+'/../data/colleges.json'));
-  console.log("yes" + students[studentName].collgeList);
-  let supplements = students[studentName]["collegeList"][collegeName]["supplements"];
+  let college = students[studentName];
+  console.log("wow" + college);
+  let supplements = list["supplements"];
   for (supplement in supplements){
     console.log(supplement);
   }
