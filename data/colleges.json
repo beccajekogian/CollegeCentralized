@@ -9,8 +9,8 @@
    },
 
    "supplements": {
-      "supplementID": {
-        "supplementID": "thebestever",
+      "101001001010": {
+        "supplementID": 101001001010,
         "prompt": "why us?",
         "wordMax": 300,
         "wordMin": 10

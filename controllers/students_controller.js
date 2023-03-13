@@ -21,7 +21,7 @@ router.get('/students', loggedIn, async function(request, response) {
 
   let list = await Student.getCollegeList(studentName);
   try{
-    console.log("yes " + list[0]["collegeName"]);
+    //console.log("yes " + list[0]["collegeName"]);
     response.status(200);
     response.setHeader('Content-Type', 'text/html')
     response.render("student/collegeList", {
@@ -46,21 +46,31 @@ router.get('/students/new', loggedIn, function(request, response) {
     });
 });
 
-router.post('/students', loggedIn, function(request, response) {
+router.post('/students', loggedIn, async function(request, response) {
     let collegeName = request.body.collegeName;
     let studentName = request.user._json.email;
     let applicationPlan = request.body.applicationPlan;
-
-    // let collegeList = Student.getCollegeList(studentName);
+    console.log("woooow " + collegeName);
+    //let collegeList = Student.getCollegeList(studentName);
 
     if(collegeName && applicationPlan){
-      let collegeList = Student.addCollege(collgeName);
+      await Student.addCollege(collegeName);
+      let newCollegeList = Student.getCollegeList(studentName);
+
+      try {
+        console.log("hi there:  " + newCollegeList);
+
       response.status(200);
       response.setHeader('Content-Type', 'text/html')
       response.redirect("/student/collegeList", {
         user: request.user,
+        colleges: newCollegeList
       });
-    }else{
+    }
+    catch (err) {
+           console.error(err);
+        }
+    } else{
       response.redirect('/error?code=400');
     }
 });
@@ -87,44 +97,56 @@ router.get('/students/:collegeName', loggedIn, async function(request, response)
 });
 
 //fix this and one below
-router.get('/students/:collegeName/:supplementID/edit', loggedIn, function(request, response) {
+router.get('/students/:collegeName/:supplementID/edit', loggedIn, async function(request, response) {
   let studentName = request.user._json.email;
   let collegeName = request.params.collegeName;
   let supplementID = request.params.supplementID;
-  let content = Student.getSupplement(studentName, collegeName, supplementID);
+  let supplement = await Student.getSupplement(studentName, collegeName, supplementID);
 
-  if(content){
-    Student.updateSupplement(supplementID, content);
+  console.log("hello " + supplement);
+
+  try{
+    console.log("nice " + supplements);
     response.status(200);
     response.setHeader('Content-Type', 'text/html')
-    response.redirect("/students/" + collegeName + "/" + supplementID,{
+    response.render("/students/" + collegeName + "/" + supplementID, {
       user: request.user,
-
+      supplement: supplement,
+      college: collegeName
     });
-  } else{
-    response.redirect('/error?code=400');
   }
+  catch (err) {
+         console.error(err);
+  }
+
 });
 
-router.get('/students/:collegeName/:supplementID', loggedIn, function(request, response) {
+router.post('/students/:collegeName/:supplementID', loggedIn, async function(request, response) {
   let studentName = request.user._json.email;
   let collegeName = request.params.collegeName;
   let supplementID = request.params.supplementID;
-  let content = request.body.supplementContent;
+  let supplement = request.body.supplementContent;
 
     if(content){
-      Student.updateSupplement(supplementID, content);
-      response.status(200);
-      response.setHeader('Content-Type', 'text/html')
-      response.redirect("/students/" + collegeName+ "/" + supplementID,{
-        user: request.user,
+      let supplement = await Student.updateSupplement(supplementID, content);
+      try {
+        response.status(200);
+        response.setHeader('Content-Type', 'text/html')
+        response.redirect("/students/" + collegeName+ "/" + supplementID, {
+          user: request.user,
+          supplement: supplement,
+          college: collegeName,
+          supplementID: supplementID
+        });
+      }
+      catch (err) {
+             console.error(err);
+      }
 
-      });
     } else{
       response.redirect('/error?code=400');
     }
 });
-
 
 
 module.exports = router;

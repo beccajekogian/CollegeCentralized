@@ -4,14 +4,14 @@
     <p>Add a college to your list<p>
 
 
-  <form action="/opponents" method="POST">
+  <form action="/students" method="POST">
 
 
     <label for="collegeName">Pick the college you want to add to your list:</label>
-    <select id="collegeName" name="school">
+    <select id="collegeName" name="collegeName">
 
       <%for(college in data){%>
-      <option value="<%=data[college]%>"><%=data[college]%></option>
+      <option value="<%=data[college].collegeName%>"><%=data[college].collegeName%></option>
       <%}%>
 
     </select>
