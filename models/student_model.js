@@ -60,15 +60,14 @@ exports.getSupplement = async function(studentName, collegeName, supplementID){
   let students = JSON.parse(fs.readFileSync(__dirname+'/../data/students.json'));
   let supplement = students[studentName]["collegeList"][collegeName]["supplements"][supplementID];
 
-  //console.log(supplements);
   return supplement;
 }
 
 exports.addCollege = async function (studentName, collegeName){
   let students = JSON.parse(fs.readFileSync(__dirname+'/../data/students.json'));
   let colleges = JSON.parse(fs.readFileSync(__dirname+'/../data/colleges.json'));
-
-  let newCollege={
+  console.log("no " + colleges[collegeName]["supplements"]);
+  let newCollege = {
     "collegeName": collegeName,
     "supplements": colleges[collegeName]["supplements"]
   }
@@ -77,9 +76,9 @@ exports.addCollege = async function (studentName, collegeName){
   // return students[studentName]["collegeList"];
 }
 
-exports.updateSupplements = async function (studentName, supplementID, supplementContent){
+exports.updateSupplement = async function (studentName, collegeName, supplementID, supplementContent){
   let students = JSON.parse(fs.readFileSync(__dirname+'/../data/students.json'));
-
+  console.log("ypu" + students[studentName]["collegeList"][collegeName]);
   students[studentName]["collegeList"][collegeName]["supplements"][supplementID]["content"] = supplementContent;
 
   fs.writeFileSync(__dirname+'/../data/students.json', JSON.stringify(students));

@@ -2,7 +2,7 @@ const uuid = require('uuid');
 const fs = require('fs');
 
 
-exports.getAllColleges =  function() {
+exports.getAllColleges =  async function() {
   let allColleges = JSON.parse(fs.readFileSync(__dirname+'/../data/colleges.json'));
   return allColleges;
 }

@@ -35,39 +35,44 @@ router.get('/students', loggedIn, async function(request, response) {
 
 });
 
-router.get('/students/new', loggedIn, function(request, response) {
+router.get('/students/new', loggedIn, async function(request, response) {
   let studentName = request.user;
-  let colleges = College.getAllColleges();
+  let colleges = await College.getAllColleges();
+  try {
     response.status(200);
     response.setHeader('Content-Type', 'text/html')
     response.render("student/newCollegeList", {
       user: request.user,
       data: colleges
-    });
+  });
+  }
+  catch (err) {
+       console.error(err);
+  }
 });
 
 router.post('/students', loggedIn, async function(request, response) {
     let collegeName = request.body.collegeName;
     let studentName = request.user._json.email;
-    let applicationPlan = request.body.applicationPlan;
+    //let applicationPlan = request.body.applicationPlan;
     console.log("woooow " + collegeName);
     //let collegeList = Student.getCollegeList(studentName);
 
-    if(collegeName && applicationPlan){
-      await Student.addCollege(collegeName);
-      let newCollegeList = Student.getCollegeList(studentName);
+    if(collegeName){
+      await Student.addCollege(studentName, collegeName);
 
       try {
-        console.log("hi there:  " + newCollegeList);
+        let newCollegeList = await Student.getCollegeList(studentName);
+        try{
+          console.log("hi there:  " + newCollegeList[0]);
+          //response.status(200);
+          //response.setHeader('Content-Type', 'text/html')
+          response.redirect("/students");
+        }catch (err) {
+               console.error(err);
+            }
 
-      response.status(200);
-      response.setHeader('Content-Type', 'text/html')
-      response.redirect("/student/collegeList", {
-        user: request.user,
-        colleges: newCollegeList
-      });
-    }
-    catch (err) {
+        } catch (err) {
            console.error(err);
         }
     } else{
@@ -106,10 +111,10 @@ router.get('/students/:collegeName/:supplementID/edit', loggedIn, async function
   console.log("hello " + supplement);
 
   try{
-    console.log("nice " + supplements);
+    console.log("nice " + supplement);
     response.status(200);
     response.setHeader('Content-Type', 'text/html')
-    response.render("/students/" + collegeName + "/" + supplementID, {
+    response.render("student/supplementDetails", {
       user: request.user,
       supplement: supplement,
       college: collegeName
@@ -125,14 +130,15 @@ router.post('/students/:collegeName/:supplementID', loggedIn, async function(req
   let studentName = request.user._json.email;
   let collegeName = request.params.collegeName;
   let supplementID = request.params.supplementID;
-  let supplement = request.body.supplementContent;
+  let content = request.body.content;
+  console.log(content);
 
     if(content){
-      let supplement = await Student.updateSupplement(supplementID, content);
+      let supplement = await Student.updateSupplement(studentName, collegeName, supplementID, content);
       try {
         response.status(200);
         response.setHeader('Content-Type', 'text/html')
-        response.redirect("/students/" + collegeName+ "/" + supplementID, {
+        response.redirect("/students/" + collegeName + "/" + supplementID + "/edit", {
           user: request.user,
           supplement: supplement,
           college: collegeName,
