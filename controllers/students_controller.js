@@ -54,12 +54,12 @@ router.get('/students/new', loggedIn, async function(request, response) {
 router.post('/students', loggedIn, async function(request, response) {
     let collegeName = request.body.collegeName;
     let studentName = request.user._json.email;
-    //let applicationPlan = request.body.applicationPlan;
+    let applicationType = request.body.applicationType;
     console.log("woooow " + collegeName);
     //let collegeList = Student.getCollegeList(studentName);
 
     if(collegeName){
-      await Student.addCollege(studentName, collegeName);
+      await Student.addCollege(studentName, collegeName, applicationType);
 
       try {
         let newCollegeList = await Student.getCollegeList(studentName);
@@ -108,10 +108,10 @@ router.get('/students/:collegeName/:supplementID/edit', loggedIn, async function
   let supplementID = request.params.supplementID;
   let supplement = await Student.getSupplement(studentName, collegeName, supplementID);
 
-  console.log("hello " + supplement);
+  //console.log("hello " + supplement);
 
   try{
-    console.log("nice " + supplement);
+    console.log("holy  " + supplement);
     response.status(200);
     response.setHeader('Content-Type', 'text/html')
     response.render("student/supplementDetails", {
@@ -129,29 +129,23 @@ router.get('/students/:collegeName/:supplementID/edit', loggedIn, async function
 router.post('/students/:collegeName/:supplementID', loggedIn, async function(request, response) {
   let studentName = request.user._json.email;
   let collegeName = request.params.collegeName;
+  console.log("yes " + collegeName);
   let supplementID = request.params.supplementID;
   let content = request.body.content;
   console.log(content);
 
-    if(content){
+  //  if(content){
       let supplement = await Student.updateSupplement(studentName, collegeName, supplementID, content);
       try {
-        response.status(200);
-        response.setHeader('Content-Type', 'text/html')
-        response.redirect("/students/" + collegeName + "/" + supplementID + "/edit", {
-          user: request.user,
-          supplement: supplement,
-          college: collegeName,
-          supplementID: supplementID
-        });
+        response.redirect("/students/" + collegeName + "/" + supplementID + "/edit");
       }
       catch (err) {
              console.error(err);
       }
 
-    } else{
-      response.redirect('/error?code=400');
-    }
+    // } else{
+    //   response.redirect('/error?code=400');
+    // }
 });
 
 

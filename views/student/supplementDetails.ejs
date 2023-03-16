@@ -1,19 +1,19 @@
 <%- include('../partials/header', {title:"College details"}) -%>
 
 
-    <h2>A <%=college.collegeName%> supplement</h2>
+    <h2>A <%=college%> supplement</h2>
   <br>
 
 <dl>
       <dt>prompt: <%=supplement.prompt%></dt>
-      <dt><%=supplement.wordMin%> to <%=supplement.wordMax%></dt>
+      <dt><%=supplement.wordMin%> to <%=supplement.wordMax%> words</dt>
 
 </dl>
 
-<form action="/students/:collegeName/:supplementID" method="POST">
+<form action="/students/<%=college%>/<%=supplement.supplementID%>" method="POST">
   <div class="form-group">
     <label for="content">Your writing: </label>
-    <textarea class="form-control" id="content" name="content" rows="5" value=<%=supplement.content%>></textarea>
+    <textarea class="form-control" id="content" name="content" rows="5" ><%=supplement.content%></textarea>
   </div>
 
   <input type="submit" value="save">
