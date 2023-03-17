@@ -1,5 +1,6 @@
 const express = require('express'),
   router = express.Router();
+  const uuidv4 = require("uuid/v4");
 
   const Student = require('../models/student_model');
   const College = require('../models/college_model');
@@ -36,11 +37,13 @@ router.get('/colleges/new', function(request, response) {
 
 router.post('/colleges', function(request, response) {
     let collegeName = request.body.collegeName;
+    let applicationTypes = request.body.collegeName;
+    let edDueDate = request.body.edDueDate;
+    let regDueDate = request.body.regDueDate;
+
 
     if(collegeName){
       College.createCollege(collgeName);
-      response.status(200);
-      response.setHeader('Content-Type', 'text/html')
       response.redirect("/colleges/"+collegeName);
     }else{
       response.redirect('/error?code=400');
@@ -49,8 +52,7 @@ router.post('/colleges', function(request, response) {
 
 //create supplement
 router.get('/colleges/:collegeName/new', function(request, response) {
-
-      let collegeName = request.query.collegeName;
+      let collegeName = request.params.collegeName;
 
       let college = College.getCollege(collegeName);
 
@@ -64,8 +66,8 @@ router.get('/colleges/:collegeName/new', function(request, response) {
 });
 
 router.post('/colleges/:collegeName', function(request, response) {
-    let collegeName = request.body.collegeName;
-    let supplementID = request.body.supplementID;
+    let collegeName = request.params.collegeName;
+    let supplementID = uuidv4();
     let prompt = request.body.prompt;
     let wordMin =  request.body.wordMin;
     let wordMax =  request.body.wordMax;

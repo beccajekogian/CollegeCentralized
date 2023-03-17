@@ -70,6 +70,7 @@ exports.addCollege = async function (studentName, collegeName, applicationType){
   let newCollege = {
     "collegeName": collegeName,
     "applicationType": applicationType,
+    "dueDate": colleges[collegeName]["dueDates"][applicationType],
     "supplements": colleges[collegeName]["supplements"]
   }
   students[studentName]["collegeList"][collegeName] = newCollege;

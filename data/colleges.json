@@ -3,9 +3,9 @@
    "collegeName": "Northwestern",
    "applicationTypes": ["EA", "ED", "Reg"],
    "dueDates": {
-     "EA": "dueDate",
-     "ED": "dueDate",
-     "Reg": "dueDate"
+     "ED": "November 1, 2023 11:59:00",
+
+     "Reg": "January 1, 2024 11:59:00"
    },
 
    "supplements": {
@@ -21,9 +21,9 @@
   "collegeName": "Cornell",
   "applicationTypes": ["EA", "ED", "Reg"],
   "dueDates": {
-    "EA": "dueDate",
-    "ED": "dueDate",
-    "Reg": "dueDate"
+    "ED": "November 1, 2023 11:59:00",
+
+    "Reg": "January 1, 2024 11:59:00"
   },
 
   "supplements": {
@@ -39,9 +39,10 @@
   "collegeName": "Hamilton",
   "applicationTypes": ["ED", "Reg"],
   "dueDates": {
-    "EA": "dueDate",
-    "ED": "dueDate",
-    "Reg": "dueDate"
+
+    "ED": "November 1, 2023 11:59:00",
+
+    "Reg": "January 1, 2024 11:59:00"
   },
 
   "supplements": {

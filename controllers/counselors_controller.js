@@ -23,38 +23,49 @@ function loggedIn(request, response, next) {
   }
 }
 
-router.get('/counselors/:counselorName', loggedIn, function(request, response) {
-    let counselorName = request.query.counselorName;
-    let students = Counselor.getStudents(counselorName);
-    response.status(200);
-    response.setHeader('Content-Type', 'text/html')
-    response.render("counselor/studentsList", {
-      user: request.user,
-      data: students
-    });
+router.get('/counselors', loggedIn, async function(request, response) {
+    let counselorName = request.user._json.email;
+    //if (!counselorName.includes("2")){
+      let students = await Counselor.getStudents(counselorName);
+      try{
+        response.status(200);
+        response.setHeader('Content-Type', 'text/html')
+        response.render("counselor/studentsList", {
+          user: counselorName,
+          students: students
+        });
+      }catch (err) {
+             console.error(err);
+          }
+    //}
+
 });
 
-router.get('/counselors/:counselorName/:studentName', loggedIn, function(request, response) {
-    let counselorName = request.query.counselorName;
-    let studentName = request.query.studentName;
+router.get('/counselors/:studentName', loggedIn, function(request, response) {
+    let counselorName = request.user._json.email;
+    let studentName = request.params.studentName;
 
-    let collgeList = Students.getCollegeList(studentName);
+    let collgeList = await Students.getCollegeList(studentName);
+    try{
 
     response.status(200);
     response.setHeader('Content-Type', 'text/html')
     response.render("counselor/studentDetails", {
-      user: request.user,
-      data: collgeList
+      user: counselorName,
+      colleges: collgeList
     });
+  }catch (err) {
+         console.error(err);
+      }
 });
 
-router.get('/counselors/:counselorName/:studentName/collegeList/:collegeName', loggedIn, function(request, response) {
-    let counselorName = request.query.counselorName;
-    let studentName = request.query.studentName;
-    let collegeName = request.query.collegeName;
+router.get('/counselors/:counselorName/:studentName/:collegeName', loggedIn, function(request, response) {
+  let counselorName = request.user._json.email;
+  let studentName = request.params.studentName;
+  let collegeName = request.params.collegeName;
 
-    let supplements = Colleges.getSupplements(collegeName);
-
+  let supplements = await Colleges.getSupplements(collegeName);
+  try{
     response.status(200);
     response.setHeader('Content-Type', 'text/html')
     response.render("counselor/collegeDetails", {
@@ -62,12 +73,31 @@ router.get('/counselors/:counselorName/:studentName/collegeList/:collegeName', l
       data: supplements
 
     });
+  }catch (err) {
+         console.error(err);
+      }
 });
 
-router.get('/counselors/:counselorName/:studentName/collegeList/:collegeName/:supplementID/edit', loggedIn, function(request, response) {
+router.get('/counselors/:studentName/:collegeName/:supplementID/edit', loggedIn, function(request, response) {
+  let counselorName = request.user._json.email;
+  let studentName = request.params.studentName;
+  let collegeName = request.params.collegeName;
+  let supplementID = request.params.supplementID;
+  let supplement = await Student.getSupplement(studentName, collegeName, supplementID);
+
+  try{
+    console.log("holy  " + supplement);
     response.status(200);
     response.setHeader('Content-Type', 'text/html')
-    response.render("colleges/supplementDetails");
+    response.render("counselor/supplementDetails", {
+      student: studentName,
+      supplement: supplement,
+      college: collegeName
+    });
+  }
+  catch (err) {
+         console.error(err);
+  }
 });
 
 router.post('/counselors/:counselorName/:studentName/collegeList/:collegeName/:supplementID', loggedIn, function(request, response) {
