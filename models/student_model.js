@@ -36,7 +36,7 @@ exports.getCollegeList = async function(studentName){
   let students = JSON.parse(fs.readFileSync(__dirname+'/../data/students.json'));
   //console.log("hey" + students[studentName]["collegeList"]);
   let list = students[studentName]["collegeList"];
-  //console.log("wow " + students[studentName].collegeList)
+
   let collegeArray = [];
   for (college in list){
     //console.log("m" + college);
@@ -47,19 +47,22 @@ exports.getCollegeList = async function(studentName){
   return collegeArray;
 }
 
-exports.getSupplementDetails = async function(studentName, collegeName){
+exports.getSupplements = async function(studentName, collegeName){
   let students = JSON.parse(fs.readFileSync(__dirname+'/../data/students.json'));
-  // let colleges = JSON.parse(fs.readFileSync(__dirname+'/../data/colleges.json'));
-  let college = students[studentName];
-  console.log("wow" + college);
-  let supplements = list["supplements"];
-  for (supplement in supplements){
-    console.log(supplement);
-  }
-  console.log(students[studentName]["collegeList"][collegeName]);
-  //let supplements = students[studentName]["collegeList"][collegeName]["supplements"]
-  console.log(supplements);
+  let colleges = JSON.parse(fs.readFileSync(__dirname+'/../data/colleges.json'));
+  let supplements = students[studentName]["collegeList"][collegeName]["supplements"];
+
+  //console.log(supplements);
   return supplements;
+}
+
+
+exports.getSupplement = async function(studentName, collegeName, supplementID){
+  let students = JSON.parse(fs.readFileSync(__dirname+'/../data/students.json'));
+  let supplement = students[studentName]["collegeList"][collegeName]["supplements"][supplementID];
+
+  //console.log(supplements);
+  return supplement;
 }
 
 exports.addCollege =  function (studentName, collegeName){
