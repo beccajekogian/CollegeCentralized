@@ -1,22 +1,16 @@
 <%- include('../partials/header', {title:"College details"}) -%>
 
 
-    <p>Add a college to your list<p>
+    <p>Create a college<p>
 
 
-  <form action="/students" method="POST">
+  <form action="/colleges/new" method="POST">
+    <label for="collegeName">Name of college:</label>
+    <input type="text" id="collegeName" name="collegeName" value=""><br>
 
+    <input type="checkbox" name="Test" <%- check %> >
 
-    <label for="collegeName">Pick the college you want to add to your list:</label>
-    <select id="collegeName" name="collegeName">
-
-      <%for(college in data){%>
-      <option value="<%=data[college].collegeName%>"><%=data[college].collegeName%></option>
-      <%}%>
-
-    </select>
-
-    <label for="applicationType">Choose an application plan</label>
+    <label for="applicationType1">Choose an application plan</label>
     <select id="applicationType" name="applicationType">
       <option value="ED">ED I</option>
       <option value="EDtwo">ED II</option>

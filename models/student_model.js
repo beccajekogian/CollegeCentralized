@@ -34,7 +34,6 @@ exports.getStudent = function(studentName){
 
 exports.getCollegeList = async function(studentName){
   let students = JSON.parse(fs.readFileSync(__dirname+'/../data/students.json'));
-  //console.log("hey" + students[studentName]["collegeList"]);
   let list = students[studentName]["collegeList"];
 
   let collegeArray = [];
@@ -60,27 +59,33 @@ exports.getSupplements = async function(studentName, collegeName){
 exports.getSupplement = async function(studentName, collegeName, supplementID){
   let students = JSON.parse(fs.readFileSync(__dirname+'/../data/students.json'));
   let supplement = students[studentName]["collegeList"][collegeName]["supplements"][supplementID];
-
-  //console.log(supplements);
+  console.log("i love " + supplement.prompt);
   return supplement;
 }
 
-exports.addCollege =  function (studentName, collegeName){
+exports.addCollege = async function (studentName, collegeName, applicationType){
   let students = JSON.parse(fs.readFileSync(__dirname+'/../data/students.json'));
   let colleges = JSON.parse(fs.readFileSync(__dirname+'/../data/colleges.json'));
-
-  let newCollege={
-    collegeName: colleges[collegeName][supplements],
+  console.log("no " + colleges[collegeName]["supplements"]);
+  let newCollege = {
+    "collegeName": collegeName,
+    "applicationType": applicationType,
+    "dueDate": colleges[collegeName]["dueDates"][applicationType],
+    "supplements": colleges[collegeName]["supplements"]
   }
-  students[studentName][collegeList][collegeName] = newCollege;
+  students[studentName]["collegeList"][collegeName] = newCollege;
   fs.writeFileSync(__dirname+'/../data/students.json', JSON.stringify(students));
-  return students[studentName][collegeList];
+  // return students[studentName]["collegeList"];
 }
 
-exports.updateSupplements =  function (studentName, supplementIndex, supplementContent){
+exports.updateSupplement = async function (studentName, collegeName, supplementID, supplementContent){
   let students = JSON.parse(fs.readFileSync(__dirname+'/../data/students.json'));
+  console.log("no" + collegeName);
 
-  students[studentName]["collegeList"][collegeName[supplementIndex]]["content"] = supplementContent;
+  console.log("ypu" + students[studentName]["collegeList"][collegeName]);
+  students[studentName]["collegeList"][collegeName]["supplements"][supplementID]["content"] = supplementContent;
 
   fs.writeFileSync(__dirname+'/../data/students.json', JSON.stringify(students));
+
+  return students[studentName]["collegeList"][collegeName]["supplements"][supplementID];
 }

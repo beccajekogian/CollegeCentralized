@@ -21,7 +21,7 @@ router.get('/students', loggedIn, async function(request, response) {
 
   let list = await Student.getCollegeList(studentName);
   try{
-    console.log("yes " + list[0]["collegeName"]);
+    //console.log("yes " + list[0]["collegeName"]);
     response.status(200);
     response.setHeader('Content-Type', 'text/html')
     response.render("student/collegeList", {
@@ -35,32 +35,47 @@ router.get('/students', loggedIn, async function(request, response) {
 
 });
 
-router.get('/students/new', loggedIn, function(request, response) {
+router.get('/students/new', loggedIn, async function(request, response) {
   let studentName = request.user;
-  let colleges = College.getAllColleges();
+  let colleges = await College.getAllColleges();
+  try {
     response.status(200);
     response.setHeader('Content-Type', 'text/html')
     response.render("student/newCollegeList", {
       user: request.user,
       data: colleges
-    });
+  });
+  }
+  catch (err) {
+       console.error(err);
+  }
 });
 
-router.post('/students', loggedIn, function(request, response) {
+router.post('/students', loggedIn, async function(request, response) {
     let collegeName = request.body.collegeName;
     let studentName = request.user._json.email;
-    let applicationPlan = request.body.applicationPlan;
+    let applicationType = request.body.applicationType;
+    console.log("woooow " + collegeName);
+    //let collegeList = Student.getCollegeList(studentName);
 
-    // let collegeList = Student.getCollegeList(studentName);
+    if(collegeName){
+      await Student.addCollege(studentName, collegeName, applicationType);
 
-    if(collegeName && applicationPlan){
-      let collegeList = Student.addCollege(collgeName);
-      response.status(200);
-      response.setHeader('Content-Type', 'text/html')
-      response.redirect("/student/collegeList", {
-        user: request.user,
-      });
-    }else{
+      try {
+        let newCollegeList = await Student.getCollegeList(studentName);
+        try{
+          console.log("hi there:  " + newCollegeList[0]);
+          //response.status(200);
+          //response.setHeader('Content-Type', 'text/html')
+          response.redirect("/students");
+        }catch (err) {
+               console.error(err);
+            }
+
+        } catch (err) {
+           console.error(err);
+        }
+    } else{
       response.redirect('/error?code=400');
     }
 });
@@ -87,44 +102,51 @@ router.get('/students/:collegeName', loggedIn, async function(request, response)
 });
 
 //fix this and one below
-router.get('/students/:collegeName/:supplementID/edit', loggedIn, function(request, response) {
+router.get('/students/:collegeName/:supplementID/edit', loggedIn, async function(request, response) {
   let studentName = request.user._json.email;
   let collegeName = request.params.collegeName;
   let supplementID = request.params.supplementID;
-  let content = Student.getSupplement(studentName, collegeName, supplementID);
+  let supplement = await Student.getSupplement(studentName, collegeName, supplementID);
 
-  if(content){
-    Student.updateSupplement(supplementID, content);
+  //console.log("hello " + supplement);
+
+  try{
+    console.log("holy  " + supplement);
     response.status(200);
     response.setHeader('Content-Type', 'text/html')
-    response.redirect("/students/" + collegeName + "/" + supplementID,{
+    response.render("student/supplementDetails", {
       user: request.user,
-
+      supplement: supplement,
+      college: collegeName
     });
-  } else{
-    response.redirect('/error?code=400');
   }
+  catch (err) {
+         console.error(err);
+  }
+
 });
 
-router.get('/students/:collegeName/:supplementID', loggedIn, function(request, response) {
+router.post('/students/:collegeName/:supplementID', loggedIn, async function(request, response) {
   let studentName = request.user._json.email;
   let collegeName = request.params.collegeName;
+  console.log("yes " + collegeName);
   let supplementID = request.params.supplementID;
-  let content = request.body.supplementContent;
+  let content = request.body.content;
+  console.log(content);
 
-    if(content){
-      Student.updateSupplement(supplementID, content);
-      response.status(200);
-      response.setHeader('Content-Type', 'text/html')
-      response.redirect("/students/" + collegeName+ "/" + supplementID,{
-        user: request.user,
+  //  if(content){
+      let supplement = await Student.updateSupplement(studentName, collegeName, supplementID, content);
+      try {
+        response.redirect("/students/" + collegeName + "/" + supplementID + "/edit");
+      }
+      catch (err) {
+             console.error(err);
+      }
 
-      });
-    } else{
-      response.redirect('/error?code=400');
-    }
+    // } else{
+    //   response.redirect('/error?code=400');
+    // }
 });
-
 
 
 module.exports = router;
