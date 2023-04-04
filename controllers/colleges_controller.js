@@ -1,7 +1,7 @@
 const express = require('express'),
   router = express.Router();
-  const uuidv4 = require("uuid/v4");
-
+  const { v4: uuidv4 } = require('uuid');
+  uuidv4(); // ⇨ '1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed'
   const Student = require('../models/student_model');
   const College = require('../models/college_model');
   const Counselor = require('../models/counselor_model');

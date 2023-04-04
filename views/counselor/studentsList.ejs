@@ -1,0 +1,17 @@
+<%- include('../partials/header', {title:"Students List"}) -%>
+
+<table class="table caption-top">
+  <caption>Students List</caption>
+    <tr>
+      <th> Student Email </th>
+
+    </tr>
+
+  <% for (student in students) { %>
+    <tr>
+      <td><a href="/students/<%=students[student]["email"]%>"><%=students[student]["email"]%></a></td>
+    </tr>
+<%}%>
+</table>
+
+<%- include('../partials/footer') -%>

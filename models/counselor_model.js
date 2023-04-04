@@ -1,20 +1,23 @@
 const fs = require('fs');
 
-exports.getStudents = function(counselorName){
+exports.getStudents = async function(counselorEmail){
   let students = JSON.parse(fs.readFileSync(__dirname+'/../data/students.json'));
   let counselors = JSON.parse(fs.readFileSync(__dirname+'/../data/counselors.json'));
 
   for (student in students){
     let studentProfile = students[student];
-    if (studentProfile["counselor"] == counselorName){
-      counselors[counselorName]["studentsList"].push(studentProfile);
+    let studentName = students[student]["studentName"];
+    if (students[student]["counselorEmail"] == counselorEmail){
+      counselors[counselorEmail]["studentsList"][studentName] = studentProfile;
+      console.log(counselors[counselorEmail]["studentsList"][studentName]);
+      //console.log("yup"+ counselors[counselorEmail]["studentsList"][studentName]);
     }
   }
-  return counselorName[studentsList];
+  return counselors[counselorEmail]["studentsList"];
 }
 
 
-exports.updateToDOList =  function (counselorName, studentName, collegeName, supplementID){
+exports.updateToDOList = async function (counselorName, studentName, collegeName, supplementID){
   let counselors = JSON.parse(fs.readFileSync(__dirname+'/../data/counselors.json'));
   let students = JSON.parse(fs.readFileSync(__dirname+'/../data/students.json'));
 
@@ -38,7 +41,7 @@ exports.updateToDOList =  function (counselorName, studentName, collegeName, sup
   fs.writeFileSync(__dirname+'/../data/counselors.json', JSON.stringify(counselors));
 }
 
-exports.updateSupplement =  function (supplementID, newContent){
+exports.updateSupplement =  async function (supplementID, newContent){
   let counselors = JSON.parse(fs.readFileSync(__dirname+'/../data/counselors.json'));
   let students = JSON.parse(fs.readFileSync(__dirname+'/../data/students.json'));
 

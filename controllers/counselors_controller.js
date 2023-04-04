@@ -24,14 +24,15 @@ function loggedIn(request, response, next) {
 }
 
 router.get('/counselors', loggedIn, async function(request, response) {
-    let counselorName = request.user._json.email;
+    let counselorEmail = request.user._json.email;
     //if (!counselorName.includes("2")){
-      let students = await Counselor.getStudents(counselorName);
+      let students = await Counselor.getStudents(counselorEmail);
+      console.log("love"+ students);
       try{
         response.status(200);
         response.setHeader('Content-Type', 'text/html')
         response.render("counselor/studentsList", {
-          user: counselorName,
+          user: request.user,
           students: students
         });
       }catch (err) {
@@ -41,7 +42,7 @@ router.get('/counselors', loggedIn, async function(request, response) {
 
 });
 
-router.get('/counselors/:studentName', loggedIn, function(request, response) {
+router.get('/counselors/:studentName', loggedIn, async function(request, response) {
     let counselorName = request.user._json.email;
     let studentName = request.params.studentName;
 
@@ -59,8 +60,9 @@ router.get('/counselors/:studentName', loggedIn, function(request, response) {
       }
 });
 
-router.get('/counselors/:counselorName/:studentName/:collegeName', loggedIn, function(request, response) {
-  let counselorName = request.user._json.email;
+router.get('/counselors/:studentName/:collegeName', loggedIn, async function(request, response) {
+  let counselorName = "stephanie.gonzalez@trinityschoolnyc.org";
+  //request.user._json.email;
   let studentName = request.params.studentName;
   let collegeName = request.params.collegeName;
 
@@ -78,7 +80,7 @@ router.get('/counselors/:counselorName/:studentName/:collegeName', loggedIn, fun
       }
 });
 
-router.get('/counselors/:studentName/:collegeName/:supplementID/edit', loggedIn, function(request, response) {
+router.get('/counselors/:studentName/:collegeName/:supplementID/edit', loggedIn, async function(request, response) {
   let counselorName = request.user._json.email;
   let studentName = request.params.studentName;
   let collegeName = request.params.collegeName;
