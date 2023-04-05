@@ -20,6 +20,9 @@ exports.createCollege = async function(collegeName, applicationTypes, edDueDate,
     "dueDates": {
       "ED":edDueDate,
       "reg": regDueDate
+    },
+    "supplements": {
+
     }
   }
   allColleges[collegeName] = newCollege;
@@ -31,11 +34,12 @@ exports.createSupplement = async function(collegeName, supplementID, prompt, wor
   let allColleges = JSON.parse(fs.readFileSync(__dirname+'/../data/colleges.json'));
 
   let newSupplement = {
+    "supplementID": supplementID,
     "prompt": prompt,
     "wordMin": wordMin,
     "wordMax": wordMax
   }
-
+  console.log("supplementID " + supplementID);
   allColleges[collegeName]["supplements"][supplementID] = newSupplement;
   fs.writeFileSync(__dirname+'/../data/colleges.json', JSON.stringify(allColleges));
 }

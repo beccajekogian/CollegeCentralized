@@ -22,10 +22,12 @@ router.get('/colleges', async function(request, response) {
 
 });
 
-router.get('/colleges/:collegeName', async function(request, response) {
+router.get('/colleges/college/:collegeName', async function(request, response) {
 
     let collegeName = request.params.collegeName;
+
     console.log("i love how this works "+ collegeName);
+
     let college = await College.getCollege(collegeName);
 
     try{
@@ -69,7 +71,7 @@ router.post('/colleges', function(request, response) {
     //let regDueDate = request.body.regDueDate;
 
     if(collegeName){
-      College.createCollege(collgeName);
+      College.createCollege(collegeName);
       response.redirect("/colleges");
     }else{
       response.redirect('/error?code=400');
@@ -107,7 +109,7 @@ router.post('/colleges/supplement/new', async function(request, response) {
       College.createSupplement(collegeName, supplementID, prompt, wordMin, wordMax);
       response.status(200);
       response.setHeader('Content-Type', 'text/html')
-      response.redirect("/colleges/"+collegeName);
+      response.redirect("/colleges/college/"+collegeName);
     }else{
       response.redirect('/error?code=400');
     }

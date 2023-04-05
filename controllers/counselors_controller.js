@@ -45,35 +45,39 @@ router.get('/counselors', loggedIn, async function(request, response) {
 router.get('/counselors/:studentName', loggedIn, async function(request, response) {
     let counselorName = request.user._json.email;
     let studentName = request.params.studentName;
-
+    console.log("studentName " + studentName);
     let collgeList = await Student.getCollegeList(studentName);
     try{
-
-    response.status(200);
-    response.setHeader('Content-Type', 'text/html')
-    response.render("counselor/studentDetails", {
-      user: request.user,
-      colleges: collgeList
+      console.log("hey "+ collgeList);
+      response.status(200);
+      response.setHeader('Content-Type', 'text/html')
+      response.render("counselor/studentDetails", {
+        user: request.user,
+        colleges: collgeList,
+        student: studentName
     });
-  }catch (err) {
+  } catch (err) {
          console.error(err);
       }
 });
 
-router.get('/counselors/:studentName/:collegeName', loggedIn, async function(request, response) {
+router.get('/counselors/counselor/:studentName/:collegeName', loggedIn, async function(request, response) {
   let counselorName = "rebecca.jekogian23@trinityschoolnyc.org";
-
   let studentName = request.params.studentName;
   let collegeName = request.params.collegeName;
 
-  console.log(collegeName);
+
+
   let supplements = await College.getSupplements(collegeName);
+
   try{
     response.status(200);
     response.setHeader('Content-Type', 'text/html')
     response.render("counselor/collegeDetails", {
       user: request.user,
-      data: supplements
+      supplements: supplements,
+      student:studentName,
+      college: collegeName
 
     });
   }catch (err) {
@@ -95,7 +99,8 @@ router.get('/counselors/:studentName/:collegeName/:supplementID/edit', loggedIn,
     response.render("counselor/supplementDetails", {
       student: studentName,
       supplement: supplement,
-      college: collegeName
+      college: collegeName,
+      user: request.user
     });
   }
   catch (err) {
