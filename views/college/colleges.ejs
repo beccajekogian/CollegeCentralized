@@ -1,0 +1,17 @@
+<%- include('../partials/header', {title:"Colleges"}) -%>
+
+<table class="table caption-top">
+  <caption>All colleges</caption>
+    <tr>
+      <th>School</th>
+    </tr>
+
+  <% for (college in colleges) { %>
+
+    <tr>
+      <td><a href="/colleges/<%=colleges[college]["collegeName"]%>"><%=colleges[college]["collegeName"]%></a></td>
+    </tr>
+<%}%>
+</table>
+
+<%- include('../partials/footer') -%>

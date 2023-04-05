@@ -1,0 +1,23 @@
+<%- include('../partials/header', {title:"College List"}) -%>
+
+
+
+<table class="table caption-top">
+  <caption>college List</caption>
+    <tr>
+      <th> School </th>
+      <th>Application Plan</th>
+      <th>Due Date</th>
+    </tr>
+
+  <% for (college in colleges) { %>
+
+    <tr>
+      <td><a href="/students/<%=colleges[college]["collegeName"]%>"><%=colleges[college]["collegeName"]%></a></td>
+      <td><%=colleges[college]["applicationType"]%></td>
+      <td><%=colleges[college].dueDate%></td>
+    </tr>
+<%}%>
+</table>
+
+<%- include('../partials/footer') -%>

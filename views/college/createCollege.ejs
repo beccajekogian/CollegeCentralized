@@ -1,0 +1,46 @@
+<%- include('../partials/header', {title:"Colleges"}) -%>
+
+
+  <p>Create a college<p>
+
+
+  <form action="/colleges" method="POST">
+
+    <label for="collegeName">Name of college:</label>
+    <input type="text" id="collegeName" name="collegeName" value=""><br>
+
+    <!-- <label for="EDone">
+      <input type="checkbox" id="EDone" name="EDone" value="yes"> ED
+    </label>
+
+    <label for="EDtwo">
+      <input type="checkbox" id="EDtwo" name="EDtwo" value="yes"> ED II
+    </label>
+
+    <label for="EA">
+      <input type="checkbox" id="EA" name="EA" value="yes"> EA
+    </label>
+
+    <label for="Reg">
+      <input type="checkbox" id="Reg" name="Reg" value="yes"> Regular
+    </label>
+
+    <label for="EDoneDate">ED due date</label>
+    <input type="date" name="EDoneDate" id="date">
+
+    <label for="EDtwoDate">ED II due date </label>
+    <input type="date" name="EDtwoDate" id="date">
+
+    <label for="EADate">EA due date</label>
+    <input type="date" name="EADate" id="date">
+
+    <label for="regDate">Regular due date</label>
+    <input type="date" name="regDate" id="date"> -->
+
+    <br><br>
+
+    <input type="submit" value="Add School!">
+
+  </form>
+
+<%- include('../partials/footer') -%>

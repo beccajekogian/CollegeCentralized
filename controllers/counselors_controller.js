@@ -46,13 +46,13 @@ router.get('/counselors/:studentName', loggedIn, async function(request, respons
     let counselorName = request.user._json.email;
     let studentName = request.params.studentName;
 
-    let collgeList = await Students.getCollegeList(studentName);
+    let collgeList = await Student.getCollegeList(studentName);
     try{
 
     response.status(200);
     response.setHeader('Content-Type', 'text/html')
     response.render("counselor/studentDetails", {
-      user: counselorName,
+      user: request.user,
       colleges: collgeList
     });
   }catch (err) {
@@ -61,12 +61,13 @@ router.get('/counselors/:studentName', loggedIn, async function(request, respons
 });
 
 router.get('/counselors/:studentName/:collegeName', loggedIn, async function(request, response) {
-  let counselorName = "stephanie.gonzalez@trinityschoolnyc.org";
-  //request.user._json.email;
+  let counselorName = "rebecca.jekogian23@trinityschoolnyc.org";
+
   let studentName = request.params.studentName;
   let collegeName = request.params.collegeName;
 
-  let supplements = await Colleges.getSupplements(collegeName);
+  console.log(collegeName);
+  let supplements = await College.getSupplements(collegeName);
   try{
     response.status(200);
     response.setHeader('Content-Type', 'text/html')
