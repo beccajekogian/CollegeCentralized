@@ -42,11 +42,13 @@ exports.createSupplement = async function(collegeName, supplementID, prompt, wor
   console.log("supplementID " + supplementID);
   allColleges[collegeName]["supplements"][supplementID] = newSupplement;
   fs.writeFileSync(__dirname+'/../data/colleges.json', JSON.stringify(allColleges));
+  console.log("this " + allColleges[collegeName]);
+
 }
 
 
 exports.getSupplements = async function(collegeName){
   let allColleges = JSON.parse(fs.readFileSync(__dirname+'/../data/colleges.json'));
-  console.log("good" + collegeName);
+  console.log("good" + allColleges[collegeName]["supplements"]);
   return allColleges[collegeName]["supplements"];
 }

@@ -1,6 +1,6 @@
 const express = require('express'),
   router = express.Router();
-
+const axios = require('axios');
 const Student = require('../models/student_model');
 const College = require('../models/college_model');
 const Counselor = require('../models/counselor_model');
@@ -18,7 +18,16 @@ function loggedIn(request, response, next) {
 router.get('/students', loggedIn, async function(request, response) {
   let studentName = request.user._json.email;
   console.log("HI " + studentName);
-
+  let theTime;
+  try {
+     const resp = await axios.get('http://worldtimeapi.org/api/timezone/America/New_York');
+     let time = resp["data"]["datetime"];
+      theTime = time;
+   }
+  catch (err) {
+      console.error(err);
+      time = "";
+   }
   let list = await Student.getCollegeList(studentName);
   try{
     //console.log("yes " + list[0]["collegeName"]);
@@ -26,7 +35,8 @@ router.get('/students', loggedIn, async function(request, response) {
     response.setHeader('Content-Type', 'text/html')
     response.render("student/collegeList", {
       user: request.user,
-      colleges: list
+      colleges: list,
+      time: theTime
     });
   }
   catch (err) {
