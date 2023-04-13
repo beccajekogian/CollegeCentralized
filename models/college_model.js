@@ -7,38 +7,48 @@ exports.getAllColleges =  async function() {
   return allColleges;
 }
 
-exports.getCollege =  function(collegeName) {
+exports.getCollege =  async function(collegeName) {
   let allColleges = JSON.parse(fs.readFileSync(__dirname+'/../data/colleges.json'));
-  return allColleges[collgeName];
+  return allColleges[collegeName];
 }
 
-exports.createCollege = function(collegeName, applicationTypes, edDueDate, regDueDate){
+exports.createCollege = async function(collegeName, applicationTypes, edDueDate, regDueDate){
   let allColleges = JSON.parse(fs.readFileSync(__dirname+'/../data/colleges.json'));
-  allColleges[collgeName] = {
+  let newCollege = {
     "collegeName": collegeName,
     "applicationTypes": applicationTypes,
     "dueDates": {
       "ED":edDueDate,
       "reg": regDueDate
+    },
+    "supplements": {
+
     }
   }
+  allColleges[collegeName] = newCollege;
 
   fs.writeFileSync(__dirname+'/../data/colleges.json', JSON.stringify(allColleges));
 }
 
-exports.createSupplement = function(collegeName, supplementID, prompt, wordMin, wordMax){
+exports.createSupplement = async function(collegeName, supplementID, prompt, wordMin, wordMax){
   let allColleges = JSON.parse(fs.readFileSync(__dirname+'/../data/colleges.json'));
+
   let newSupplement = {
+    "supplementID": supplementID,
     "prompt": prompt,
     "wordMin": wordMin,
     "wordMax": wordMax
   }
-  allColleges[collgeName]["supplements"][supplementID] = newSupplement;
+  console.log("supplementID " + supplementID);
+  allColleges[collegeName]["supplements"][supplementID] = newSupplement;
   fs.writeFileSync(__dirname+'/../data/colleges.json', JSON.stringify(allColleges));
+  console.log("this " + allColleges[collegeName]);
+
 }
 
 
-exports.getSupplements = function(collegeName){
+exports.getSupplements = async function(collegeName){
   let allColleges = JSON.parse(fs.readFileSync(__dirname+'/../data/colleges.json'));
-  return allColleges[collgeName]["supplements"];
+  console.log("good" + allColleges[collegeName]["supplements"]);
+  return allColleges[collegeName]["supplements"];
 }
