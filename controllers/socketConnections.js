@@ -21,7 +21,6 @@ io.on('connection', function(socket){
           message: 'connected'
       });
     });
-
 });
 
 module.exports = socketapi;
