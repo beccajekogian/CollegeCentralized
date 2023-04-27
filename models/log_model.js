@@ -6,16 +6,28 @@ const fs = require('fs');
 
 
 exports.trackLogin = async function(userEmail){
+  console.log("its good" + userEmail);
+  db.serialize(() => {
 
-  db.run("INSERT INTO log (id, user_id, eventType, description, timeVisited) VALUES (?,?,?,?,?)",
-    1, userEmail, 'Login', 'wow', new Date(),
+    db.all("SELECT * FROM log", function(err, rows){
+      if(err){
+        console.log(err);
+      } else {
+        console.log(rows);
+      }
+    });
+  });
+  db.run("INSERT INTO log (user_id, eventType, description) VALUES (?,?,?)",
+    userEmail, 'login', 'wow',
 
     function(err) {
       if (err) { throw err;}
     }
   );
-
 }
+
+
+
 
 
 exports.getAllLogins = async function(){
@@ -28,7 +40,7 @@ exports.getAllLogins = async function(){
       }
     });
   });
-  db.close();
+
 }
 
 exports.getUserLogs = async function(user_id){
@@ -41,7 +53,7 @@ exports.getUserLogs = async function(user_id){
       }
     });
   });
-  db.close();
+
 }
 
 exports.getDateLogs = async function(date){
@@ -54,5 +66,5 @@ exports.getDateLogs = async function(date){
       }
     });
   });
-  db.close();
+
 }
