@@ -18,24 +18,17 @@ exports.trackLogin = async function(userEmail){
 }
 
 
-exports.getAllLogs = async function(){
-
+exports.getAllLogins = async function(){
   db.serialize(() => {
-
-
-    db.all('SELECT * FROM log', function(err, rows){
+    db.all("SELECT * FROM log WHERE eventType =?", "login", function(err){
       if(err){
         console.log(err);
       } else {
         return rows;
       }
     });
-
-
-    });
-
+  });
   db.close();
-
 }
 
 exports.getUserLogs = async function(user_id){

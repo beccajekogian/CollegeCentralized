@@ -1,0 +1,23 @@
+<%- include('../partials/header', {title:"login Details"}) -%>
+
+<table class="table caption-top">
+  <caption>All colleges</caption>
+    <tr>
+      <th>User ID</th>
+      <th>eventType</th>
+      <th>timeVisited</th>
+
+    </tr>
+
+  <% for (login in logins) { %>
+
+    <tr>
+      <td><%=logins[login].user_id%></td>
+      <td><%=logins[login].eventType%></td>
+      <td><%=logins[login].timeVisited%></td>
+
+    </tr>
+<%}%>
+</table>
+
+<%- include('../partials/footer') -%>

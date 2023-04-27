@@ -65,8 +65,15 @@ exports.updateSupplement =  async function (supplementID, newContent){
 //only counselors can be admin
 exports.isAdmin = function(name){
   let counselors = JSON.parse(fs.readFileSync(__dirname+'/../data/counselors.json'));
+  if(counselors[name].privileges == 'admin') return true;
   if(counselors[name]) return true;
   else return false;
+}
+
+exports.makeAdmin = function(name){
+  let counselors = JSON.parse(fs.readFileSync(__dirname+'/../data/counselors.json'));
+  counselors[name].privileges = 'admin';
+  fs.writeFileSync(__dirname+'/../data/counselors.json', JSON.stringify(counselors));
 }
 
 
