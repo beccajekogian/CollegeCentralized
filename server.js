@@ -23,6 +23,8 @@ app.use(require('./controllers/auth'));
 app.use(require('./controllers/students_controller'));
 app.use(require('./controllers/counselors_controller'));
 app.use(require('./controllers/colleges_controller'));
+app.use(require('./controllers/admin_controller'));
+
 
 
 app.use("", function(request, response) {

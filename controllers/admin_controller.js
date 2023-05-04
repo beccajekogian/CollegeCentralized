@@ -8,14 +8,24 @@ const express = require('express'),
   //const Admin = require('../models/admin_model');
   const Admin = require('../models/log_model');
 
-router.get('/trackInfo', async function(request, response) {
+  function loggedIn(request, response, next) {
+    if (request.user) {
+      next();
+    } else {
+      response.redirect('/login');
+    }
+  }
+
+router.get('/trackInfo', loggedIn, async function(request, response) {
   let adminName = request.user._json.email;
 
   if (Counselor.isAdmin(adminName) === true){
     console.log(adminName + "has acsess");
-    let logins = Admin.getAllLogins();
+    let logins = await Admin.getAllLogins();
+    console.log("hey "+ logins);
+
     try{
-      console.log("hey "+ logins);
+      console.log("there "+ logins);
       response.status(200);
       response.setHeader('Content-Type', 'text/html')
       response.render("admin/loginDetails", {
@@ -30,3 +40,5 @@ router.get('/trackInfo', async function(request, response) {
   }
 
 });
+
+module.exports = router;

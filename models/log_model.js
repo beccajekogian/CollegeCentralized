@@ -24,24 +24,35 @@ exports.trackLogin = async function(userEmail){
       if (err) { throw err;}
     }
   );
-}
+} 
 
 
 
 
 
 exports.getAllLogins = async function(){
-  db.serialize(() => {
-    db.all("SELECT * FROM log WHERE eventType =?", "login", function(err){
-      if(err){
-        console.log(err);
-      } else {
-        return rows;
-      }
-    });
-  });
-
+  try{
+    const res = await new Promise(function (resolve, reject){
+      db.all("SELECT * FROM log WHERE eventType =?", "login", function(err, res){
+        err ? reject(err) : resolve(res)
+      })
+    })
+    return res
+  }catch (err){
+    console.log(err)
+  }
 }
+  // db.serialize(() => {
+  //   db.all("SELECT * FROM log WHERE eventType =?", "login", function(err){
+  //     if(err){
+  //       console.log(err);
+  //     } else {
+  //       return rows;
+  //     }
+  //   });
+  // });
+
+
 
 exports.getUserLogs = async function(user_id){
   db.serialize(() => {
