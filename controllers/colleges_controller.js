@@ -14,7 +14,9 @@ router.get('/colleges', async function(request, response) {
       response.setHeader('Content-Type', 'text/html')
       response.render("college/colleges", {
         colleges: colleges,
-        user: request.user
+        user: request.user,
+        permission: Student.getPermissions(request.user._json.email)
+
       });
     } catch (err) {
            console.error(err);
@@ -41,7 +43,9 @@ router.get('/colleges/college/:collegeName', async function(request, response) {
         response.render("college/collegeDetails", {
           data: college,
           user: request.user,
-          supplements: supplements
+          supplements: supplements,
+          permission: Student.getPermissions(request.user._json.email)
+
         });
       } catch (err) {
              console.error(err);
@@ -59,7 +63,9 @@ router.get('/colleges/new', function(request, response) {
     response.status(200);
     response.setHeader('Content-Type', 'text/html')
     response.render("college/createCollege",{
-      user: request.user
+      user: request.user,
+      permission: Student.getPermissions(request.user._json.email)
+
     });
 });
 
@@ -87,7 +93,9 @@ router.get('/colleges/supplement/new', async function(request, response) {
         response.setHeader('Content-Type', 'text/html')
         response.render("college/createSupplement", {
           data: colleges,
-          user: request.user
+          user: request.user,
+          permission: Student.getPermissions(request.user._json.email)
+
         });
       }
       catch (err) {

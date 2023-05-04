@@ -30,7 +30,8 @@ router.get('/trackInfo', loggedIn, async function(request, response) {
       response.setHeader('Content-Type', 'text/html')
       response.render("admin/loginDetails", {
         user: request.user,
-        logins: logins
+        logins: logins,
+        permission: Student.getPermissions(request.user._json.email)
     });
   } catch (err) {
          console.error(err);
@@ -40,5 +41,7 @@ router.get('/trackInfo', loggedIn, async function(request, response) {
   }
 
 });
+
+
 
 module.exports = router;

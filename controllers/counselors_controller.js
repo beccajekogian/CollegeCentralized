@@ -33,7 +33,9 @@ router.get('/counselors', loggedIn, async function(request, response) {
         response.setHeader('Content-Type', 'text/html')
         response.render("counselor/studentsList", {
           user: request.user,
-          students: students
+          students: students,
+          permission: Student.getPermissions(request.user._json.email)
+
         });
       }catch (err) {
              console.error(err);
@@ -54,7 +56,9 @@ router.get('/counselors/:studentName', loggedIn, async function(request, respons
       response.render("counselor/studentDetails", {
         user: request.user,
         colleges: collgeList,
-        student: studentName
+        student: studentName,
+        permission: Student.getPermissions(request.user._json.email)
+
     });
   } catch (err) {
          console.error(err);
@@ -77,7 +81,9 @@ router.get('/counselors/counselor/:studentName/:collegeName', loggedIn, async fu
       user: request.user,
       supplements: supplements,
       student:studentName,
-      college: collegeName
+      college: collegeName,
+      permission: Student.getPermissions(request.user._json.email)
+
 
     });
   }catch (err) {
@@ -100,7 +106,9 @@ router.get('/counselors/:studentName/:collegeName/:supplementID/edit', loggedIn,
       student: studentName,
       supplement: supplement,
       college: collegeName,
-      user: request.user
+      user: request.user,
+      permission: Student.getPermissions(request.user._json.email)
+
     });
   }
   catch (err) {
@@ -122,6 +130,8 @@ router.post('/counselors/:counselorName/:studentName/collegeList/:collegeName/:s
       response.setHeader('Content-Type', 'text/html')
       response.redirect("/counselors/"+counselorName+ "/" +studentName+ "/collegeList/" +collegeName+ "/" + supplementID,{
         user: request.user,
+        permission: Student.getPermissions(request.user._json.email)
+
       });
     } else{
       response.redirect('/error?code=400');

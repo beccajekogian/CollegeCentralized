@@ -36,7 +36,9 @@ router.get('/students', loggedIn, async function(request, response) {
     response.render("student/collegeList", {
       user: request.user,
       colleges: list,
-      time: theTime
+      time: theTime,
+      permission: Student.getPermissions(request.user._json.email)
+
     });
   }
   catch (err) {
@@ -53,7 +55,9 @@ router.get('/students/new', loggedIn, async function(request, response) {
     response.setHeader('Content-Type', 'text/html')
     response.render("student/newCollegeList", {
       user: request.user,
-      data: colleges
+      data: colleges,
+      permission: Student.getPermissions(request.user._json.email)
+
   });
   }
   catch (err) {
@@ -65,7 +69,6 @@ router.post('/students', loggedIn, async function(request, response) {
     let collegeName = request.body.collegeName;
     let studentName = request.user._json.email;
     let applicationType = request.body.applicationType;
-    console.log("woooow " + collegeName);
     //let collegeList = Student.getCollegeList(studentName);
 
     if(collegeName){
@@ -74,7 +77,6 @@ router.post('/students', loggedIn, async function(request, response) {
       try {
         let newCollegeList = await Student.getCollegeList(studentName);
         try{
-          console.log("hi there:  " + newCollegeList[0]);
           //response.status(200);
           //response.setHeader('Content-Type', 'text/html')
           response.redirect("/students");
@@ -103,7 +105,9 @@ router.get('/students/:collegeName', loggedIn, async function(request, response)
     response.render("student/collegeDetails", {
       user: request.user,
       supplements: supplements,
-      college: collegeName
+      college: collegeName,
+      permission: Student.getPermissions(request.user._json.email)
+
     });
   }
   catch (err) {
@@ -127,7 +131,9 @@ router.get('/students/:collegeName/:supplementID/edit', loggedIn, async function
     response.render("student/supplementDetails", {
       user: request.user,
       supplement: supplement,
-      college: collegeName
+      college: collegeName,
+      permission: Student.getPermissions(request.user._json.email)
+
     });
   }
   catch (err) {

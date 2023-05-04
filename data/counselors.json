@@ -1,7 +1,7 @@
 {
   "rebecca.jekogian23@trinityschoolnyc.org": {
     "email": "rebecca.jekogian23@trinityschoolnyc.org",
-    "privileges": "admin",
+    "permission": "admin",
     "lastName": "gonzalez",
     "toDoList": {
       "rebecca.jekogian23@trinityschoolnyc.org": {

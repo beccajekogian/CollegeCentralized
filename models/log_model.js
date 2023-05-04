@@ -24,11 +24,7 @@ exports.trackLogin = async function(userEmail){
       if (err) { throw err;}
     }
   );
-} 
-
-
-
-
+}
 
 exports.getAllLogins = async function(){
   try{
@@ -42,15 +38,6 @@ exports.getAllLogins = async function(){
     console.log(err)
   }
 }
-  // db.serialize(() => {
-  //   db.all("SELECT * FROM log WHERE eventType =?", "login", function(err){
-  //     if(err){
-  //       console.log(err);
-  //     } else {
-  //       return rows;
-  //     }
-  //   });
-  // });
 
 
 

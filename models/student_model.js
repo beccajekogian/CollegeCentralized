@@ -32,6 +32,18 @@ exports.getStudent = function(studentName){
   return students[studentName];
 }
 
+exports.getPermissions = async function(name){
+  let students = JSON.parse(fs.readFileSync(__dirname+'/../data/students.json'));
+  let counselors = JSON.parse(fs.readFileSync(__dirname+'/../data/counselors.json'));
+
+  if (name.includes('2')) return 'student';
+  else {
+    if (counselors[name].permission != admin) return 'counselor';
+    else return 'admin';
+  }
+
+}
+
 exports.getCollegeList = async function(studentName){
   let students = JSON.parse(fs.readFileSync(__dirname+'/../data/students.json'));
   let list = students[studentName]["collegeList"];

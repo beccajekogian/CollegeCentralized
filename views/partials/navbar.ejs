@@ -5,23 +5,45 @@
     </a>
     <ul class="navbar-nav mr-auto">
 
-
+      <%if(permission === 'student'){%>
         <li class="nav-item active">
           <a class="nav-link" href="/students">College List</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="/students/new">Add college to list</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/colleges">colleges</a>
+        </li>
+      <%}%>
 
+      <%if(permission === 'counselor'){%>
         <li class="nav-item">
           <a class="nav-link" href="/counselors">counselor dashboard</a>
         </li>
         <li class="nav-item">
+          <a class="nav-link" href="/colleges">colleges</a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link" href="/colleges/new">add a college </a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="/colleges/supplement/new">add supplement</a>
+        </li>
+      <%}%>
+
+      <%if(permission === 'admin'){%>
+        <li class="nav-item">
+          <a class="nav-link" href="/counselors">counselor dashboard</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="/colleges">colleges</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/colleges/new">add a college </a>
+        </li>
+
         <li class="nav-item">
           <a class="nav-link" href="/colleges/supplement/new">add supplement</a>
         </li>
@@ -29,11 +51,7 @@
         <li class="nav-item">
           <a class="nav-link" href="/trackInfo">track info</a>
         </li>
-
-
-
-
-
+      <%}%>
 
 
     </ul>
