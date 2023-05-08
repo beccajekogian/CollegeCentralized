@@ -9,8 +9,6 @@ exports.getStudents = async function(counselorEmail){
     let studentName = students[student]["studentName"];
     if (students[student]["counselorEmail"] == counselorEmail){
       counselors[counselorEmail]["studentsList"][studentName] = studentProfile;
-      console.log(counselors[counselorEmail]["studentsList"][studentName]);
-      //console.log("yup"+ counselors[counselorEmail]["studentsList"][studentName]);
     }
   }
   return counselors[counselorEmail]["studentsList"];

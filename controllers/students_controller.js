@@ -16,8 +16,11 @@ function loggedIn(request, response, next) {
 
 
 router.get('/students', loggedIn, async function(request, response) {
-  let studentName = request.user._json.email;
-  console.log("HI " + studentName);
+  let permission = await Student.getPermissions(request.user._json.email)
+  try {
+    let studentName = request.user._json.email;
+  let permission = await Student.getPermissions(request.user._json.email)
+
   let theTime;
   try {
      const resp = await axios.get('http://worldtimeapi.org/api/timezone/America/New_York');
@@ -37,40 +40,49 @@ router.get('/students', loggedIn, async function(request, response) {
       user: request.user,
       colleges: list,
       time: theTime,
-      permission: Student.getPermissions(request.user._json.email)
-
+      permission: permission
     });
   }
   catch (err) {
          console.error(err);
       }
-
+    }
+    catch (err) {
+           console.error(err);
+        }
 });
 
 router.get('/students/new', loggedIn, async function(request, response) {
+  let permission = await Student.getPermissions(request.user._json.email)
+  try {
   let studentName = request.user;
   let colleges = await College.getAllColleges();
+  let permission = await Student.getPermissions(request.user._json.email)
+
   try {
     response.status(200);
     response.setHeader('Content-Type', 'text/html')
     response.render("student/newCollegeList", {
       user: request.user,
       data: colleges,
-      permission: Student.getPermissions(request.user._json.email)
-
+      permission: permission
   });
   }
   catch (err) {
        console.error(err);
   }
+}
+catch (err) {
+     console.error(err);
+}
 });
 
 router.post('/students', loggedIn, async function(request, response) {
     let collegeName = request.body.collegeName;
     let studentName = request.user._json.email;
     let applicationType = request.body.applicationType;
-    //let collegeList = Student.getCollegeList(studentName);
-
+    let permission = await Student.getPermissions(request.user._json.email)
+    try {
     if(collegeName){
       await Student.addCollege(studentName, collegeName, applicationType);
 
@@ -90,6 +102,9 @@ router.post('/students', loggedIn, async function(request, response) {
     } else{
       response.redirect('/error?code=400');
     }
+  } catch (err) {
+     console.error(err);
+  }
 });
 
 
@@ -97,7 +112,8 @@ router.get('/students/:collegeName', loggedIn, async function(request, response)
   let studentName = request.user._json.email;
   let collegeName = request.params.collegeName;
   let supplements = await Student.getSupplements(studentName, collegeName);
-
+  let permission = await Student.getPermissions(request.user._json.email)
+  try {
   try{
     console.log("nice " + supplements);
     response.status(200);
@@ -106,13 +122,16 @@ router.get('/students/:collegeName', loggedIn, async function(request, response)
       user: request.user,
       supplements: supplements,
       college: collegeName,
-      permission: Student.getPermissions(request.user._json.email)
-
+      permission: permission
     });
   }
   catch (err) {
          console.error(err);
       }
+
+    } catch (err) {
+       console.error(err);
+    }
 });
 
 //fix this and one below
@@ -121,7 +140,8 @@ router.get('/students/:collegeName/:supplementID/edit', loggedIn, async function
   let collegeName = request.params.collegeName;
   let supplementID = request.params.supplementID;
   let supplement = await Student.getSupplement(studentName, collegeName, supplementID);
-
+  let permission = await Student.getPermissions(request.user._json.email)
+  try {
   //console.log("hello " + supplement);
 
   try{
@@ -132,23 +152,26 @@ router.get('/students/:collegeName/:supplementID/edit', loggedIn, async function
       user: request.user,
       supplement: supplement,
       college: collegeName,
-      permission: Student.getPermissions(request.user._json.email)
-
+      permission: permission
     });
   }
   catch (err) {
          console.error(err);
   }
+}
+catch (err) {
+       console.error(err);
+}
 
 });
 
 router.post('/students/:collegeName/:supplementID', loggedIn, async function(request, response) {
   let studentName = request.user._json.email;
   let collegeName = request.params.collegeName;
-  console.log("yes " + collegeName);
   let supplementID = request.params.supplementID;
   let content = request.body.content;
-  console.log(content);
+  let permission = await Student.getPermissions(request.user._json.email)
+  try {
 
   //  if(content){
       let supplement = await Student.updateSupplement(studentName, collegeName, supplementID, content);
@@ -158,6 +181,10 @@ router.post('/students/:collegeName/:supplementID', loggedIn, async function(req
       catch (err) {
              console.error(err);
       }
+    }
+    catch (err) {
+           console.error(err);
+    }
 
     // } else{
     //   response.redirect('/error?code=400');

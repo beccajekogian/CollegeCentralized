@@ -25,18 +25,22 @@ function loggedIn(request, response, next) {
 
 router.get('/counselors', loggedIn, async function(request, response) {
     let counselorEmail = request.user._json.email;
-    //if (!counselorName.includes("2")){
-      let students = await Counselor.getStudents(counselorEmail);
-      console.log("love"+ students);
+    let permission = await Student.getPermissions(request.user._json.email)
+    try {
+    let students = await Counselor.getStudents(counselorEmail);
+
       try{
+
         response.status(200);
         response.setHeader('Content-Type', 'text/html')
         response.render("counselor/studentsList", {
           user: request.user,
           students: students,
-          permission: Student.getPermissions(request.user._json.email)
-
+          permission: permission
         });
+      }catch (err) {
+             console.error(err);
+          }
       }catch (err) {
              console.error(err);
           }
@@ -47,22 +51,25 @@ router.get('/counselors', loggedIn, async function(request, response) {
 router.get('/counselors/:studentName', loggedIn, async function(request, response) {
     let counselorName = request.user._json.email;
     let studentName = request.params.studentName;
-    console.log("studentName " + studentName);
+    let permission = await Student.getPermissions(request.user._json.email)
+    try {
     let collgeList = await Student.getCollegeList(studentName);
+
     try{
-      console.log("hey "+ collgeList);
       response.status(200);
       response.setHeader('Content-Type', 'text/html')
       response.render("counselor/studentDetails", {
         user: request.user,
         colleges: collgeList,
         student: studentName,
-        permission: Student.getPermissions(request.user._json.email)
-
+        permission: permission
     });
   } catch (err) {
          console.error(err);
       }
+    }catch (err) {
+           console.error(err);
+        }
 });
 
 router.get('/counselors/counselor/:studentName/:collegeName', loggedIn, async function(request, response) {
@@ -70,7 +77,8 @@ router.get('/counselors/counselor/:studentName/:collegeName', loggedIn, async fu
   let studentName = request.params.studentName;
   let collegeName = request.params.collegeName;
 
-
+  let permission = await Student.getPermissions(request.user._json.email)
+  try {
 
   let supplements = await College.getSupplements(collegeName);
 
@@ -82,13 +90,16 @@ router.get('/counselors/counselor/:studentName/:collegeName', loggedIn, async fu
       supplements: supplements,
       student:studentName,
       college: collegeName,
-      permission: Student.getPermissions(request.user._json.email)
+      permission: permission
 
 
     });
   }catch (err) {
          console.error(err);
       }
+    }catch (err) {
+           console.error(err);
+        }
 });
 
 router.get('/counselors/:studentName/:collegeName/:supplementID/edit', loggedIn, async function(request, response) {
@@ -97,9 +108,9 @@ router.get('/counselors/:studentName/:collegeName/:supplementID/edit', loggedIn,
   let collegeName = request.params.collegeName;
   let supplementID = request.params.supplementID;
   let supplement = await Student.getSupplement(studentName, collegeName, supplementID);
-
+  let permission = await Student.getPermissions(request.user._json.email)
+  try {
   try{
-    console.log("holy  " + supplement);
     response.status(200);
     response.setHeader('Content-Type', 'text/html')
     response.render("counselor/supplementDetails", {
@@ -107,20 +118,26 @@ router.get('/counselors/:studentName/:collegeName/:supplementID/edit', loggedIn,
       supplement: supplement,
       college: collegeName,
       user: request.user,
-      permission: Student.getPermissions(request.user._json.email)
+      permission: permission
 
     });
   }
   catch (err) {
          console.error(err);
   }
+}
+catch (err) {
+       console.error(err);
+}
 });
 
-router.post('/counselors/:counselorName/:studentName/collegeList/:collegeName/:supplementID', loggedIn, function(request, response) {
+router.post('/counselors/:counselorName/:studentName/collegeList/:collegeName/:supplementID', loggedIn, async function(request, response) {
   let counselorName = request.query.counselorName;
   let studentName = request.query.studentName;
   let collegeName = request.query.collegeName;
   let supplementID = request.query.supplementID;
+  let permission = await Student.getPermissions(request.user._json.email)
+  try {
 
     let content = request.body.supplementContent;
 
@@ -130,11 +147,14 @@ router.post('/counselors/:counselorName/:studentName/collegeList/:collegeName/:s
       response.setHeader('Content-Type', 'text/html')
       response.redirect("/counselors/"+counselorName+ "/" +studentName+ "/collegeList/" +collegeName+ "/" + supplementID,{
         user: request.user,
-        permission: Student.getPermissions(request.user._json.email)
+        permission: permission
 
       });
     } else{
       response.redirect('/error?code=400');
+    }
+  } catch (err) {
+           console.error(err);
     }
 });
 

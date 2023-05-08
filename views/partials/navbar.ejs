@@ -5,25 +5,28 @@
     </a>
     <ul class="navbar-nav mr-auto">
 
-      <%if(permission === 'student'){%>
-        <li class="nav-item active">
+
+      <li class="nav-item">
+        <a class="nav-link" href="/colleges">colleges</a>
+      </li>
+
+    </ul>
+
+    <%if(user){%>
+      <%if(permission === "student"){%>
+        <li class="nav-item">
           <a class="nav-link" href="/students">College List</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="/students/new">Add college to list</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/colleges">colleges</a>
-        </li>
       <%}%>
 
-      <%if(permission === 'counselor'){%>
+      <% if(permission === "counselor"){%>
         <li class="nav-item">
           <a class="nav-link" href="/counselors">counselor dashboard</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/colleges">colleges</a>
-        </li>
+
         <li class="nav-item">
           <a class="nav-link" href="/colleges/new">add a college </a>
         </li>
@@ -33,13 +36,11 @@
         </li>
       <%}%>
 
-      <%if(permission === 'admin'){%>
+      <% if(permission === "admin"){%>
         <li class="nav-item">
           <a class="nav-link" href="/counselors">counselor dashboard</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/colleges">colleges</a>
-        </li>
+
         <li class="nav-item">
           <a class="nav-link" href="/colleges/new">add a college </a>
         </li>
@@ -53,10 +54,9 @@
         </li>
       <%}%>
 
+      <small>Logged in as <%=user._json.email%> : <%=permission%> </small>
 
-    </ul>
-    <%if(user){%>
-      <small>Logged in as <%=user._json.email%></small>
+
     <%}%>
 
   </div>

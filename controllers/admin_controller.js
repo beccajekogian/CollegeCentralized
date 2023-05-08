@@ -18,7 +18,8 @@ const express = require('express'),
 
 router.get('/trackInfo', loggedIn, async function(request, response) {
   let adminName = request.user._json.email;
-
+  let permission = await Student.getPermissions(request.user._json.email)
+  try {
   if (Counselor.isAdmin(adminName) === true){
     console.log(adminName + "has acsess");
     let logins = await Admin.getAllLogins();
@@ -31,7 +32,7 @@ router.get('/trackInfo', loggedIn, async function(request, response) {
       response.render("admin/loginDetails", {
         user: request.user,
         logins: logins,
-        permission: Student.getPermissions(request.user._json.email)
+        permission: permission
     });
   } catch (err) {
          console.error(err);
@@ -39,7 +40,9 @@ router.get('/trackInfo', loggedIn, async function(request, response) {
   } else{
     console.error(err);
   }
-
+} catch (err) {
+       console.error(err);
+    }
 });
 
 

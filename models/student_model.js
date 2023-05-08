@@ -35,13 +35,10 @@ exports.getStudent = function(studentName){
 exports.getPermissions = async function(name){
   let students = JSON.parse(fs.readFileSync(__dirname+'/../data/students.json'));
   let counselors = JSON.parse(fs.readFileSync(__dirname+'/../data/counselors.json'));
-
-  if (name.includes('2')) return 'student';
-  else {
-    if (counselors[name].permission != admin) return 'counselor';
-    else return 'admin';
-  }
-
+  if (name.includes('2')){
+    console.log("hello" + students[name].permission);
+    return students[name].permission;
+  } else return counselors[name].permission;
 }
 
 exports.getCollegeList = async function(studentName){
@@ -50,11 +47,9 @@ exports.getCollegeList = async function(studentName){
 
   let collegeArray = [];
   for (college in list){
-    //console.log("m" + college);
     college.collegeName = college;
     collegeArray.push(list[college])
   }
-  //console.log(collegeArray);
   return collegeArray;
 }
 
@@ -63,7 +58,6 @@ exports.getSupplements = async function(studentName, collegeName){
   let colleges = JSON.parse(fs.readFileSync(__dirname+'/../data/colleges.json'));
   let supplements = students[studentName]["collegeList"][collegeName]["supplements"];
 
-  //console.log(supplements);
   return supplements;
 }
 
@@ -71,14 +65,12 @@ exports.getSupplements = async function(studentName, collegeName){
 exports.getSupplement = async function(studentName, collegeName, supplementID){
   let students = JSON.parse(fs.readFileSync(__dirname+'/../data/students.json'));
   let supplement = students[studentName]["collegeList"][collegeName]["supplements"][supplementID];
-  console.log("i love " + supplement.prompt);
   return supplement;
 }
 
 exports.addCollege = async function (studentName, collegeName, applicationType){
   let students = JSON.parse(fs.readFileSync(__dirname+'/../data/students.json'));
   let colleges = JSON.parse(fs.readFileSync(__dirname+'/../data/colleges.json'));
-  console.log("no " + colleges[collegeName]["supplements"]);
   let newCollege = {
     "collegeName": collegeName,
     "applicationType": applicationType,
@@ -92,9 +84,7 @@ exports.addCollege = async function (studentName, collegeName, applicationType){
 
 exports.updateSupplement = async function (studentName, collegeName, supplementID, supplementContent){
   let students = JSON.parse(fs.readFileSync(__dirname+'/../data/students.json'));
-  console.log("no" + collegeName);
 
-  console.log("ypu" + students[studentName]["collegeList"][collegeName]);
   students[studentName]["collegeList"][collegeName]["supplements"][supplementID]["content"] = supplementContent;
 
   fs.writeFileSync(__dirname+'/../data/students.json', JSON.stringify(students));
