@@ -4,28 +4,7 @@ exports.getStudents = function(){
   let students = JSON.parse(fs.readFileSync(__dirname+'/../data/student.json'));
   return students;
 }
-//
-// exports.isStudent = function(opponentName){
-//   let opponents = JSON.parse(fs.readFileSync(__dirname+'/../data/opponents.json'));
-//   if(opponents[opponentName]) return true;
-//   else return false;
-// }
-//
-// exports.getSortedOpponents = function(){
-//   let opponents = JSON.parse(fs.readFileSync(__dirname+'/../data/opponents.json'));
-//   let opponentArray=[];
-//
-//   //create an array to use sort, and dynamically generate win percent
-//   for(name in opponents){
-//     opponents[name].win_percent = (opponents[name].win/parseFloat(opponents[name].win+opponents[name].lose+opponents[name].tie) * 100).toFixed(2);
-//     if(opponents[name].win_percent=="NaN") opponents[name].win_percent=0;
-//     opponentArray.push(opponents[name])
-//   }
-//   opponentArray.sort(function(a, b){
-//     return parseFloat(b.win_percent)-parseFloat(a.win_percent);
-//   })
-//   return opponentArray;
-// }
+
 
 exports.getStudent = function(studentName){
   let students = JSON.parse(fs.readFileSync(__dirname+'/../data/students.json'));
@@ -79,7 +58,12 @@ exports.addCollege = async function (studentName, collegeName, applicationType){
   }
   students[studentName]["collegeList"][collegeName] = newCollege;
   fs.writeFileSync(__dirname+'/../data/students.json', JSON.stringify(students));
-  // return students[studentName]["collegeList"];
+}
+
+exports.getCounselor = async function (studentName){
+  let students = JSON.parse(fs.readFileSync(__dirname+'/../data/students.json'));
+  let counselor = students[studentName]["counselorEmail"];
+  return counselor;
 }
 
 exports.updateSupplement = async function (studentName, collegeName, supplementID, supplementContent){
@@ -90,4 +74,18 @@ exports.updateSupplement = async function (studentName, collegeName, supplementI
   fs.writeFileSync(__dirname+'/../data/students.json', JSON.stringify(students));
 
   return students[studentName]["collegeList"][collegeName]["supplements"][supplementID];
+}
+
+exports.setRoomID = function (studentName, roomID){
+  let students = JSON.parse(fs.readFileSync(__dirname+'/../data/students.json'));
+  students[studentName]["roomID"] = roomID;
+  fs.writeFileSync(__dirname+'/../data/students.json', JSON.stringify(students));
+}
+
+exports.getRoomID = async function (studentName){
+  let students = JSON.parse(fs.readFileSync(__dirname+'/../data/students.json'));
+
+  let roomID = students[studentName]["roomID"];
+
+  return roomID;
 }

@@ -4,6 +4,8 @@ const axios = require('axios');
 const Student = require('../models/student_model');
 const College = require('../models/college_model');
 const Counselor = require('../models/counselor_model');
+const { v4: uuidv4 } = require('uuid');
+uuidv4(); // ⇨ '1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed'
 
 
 function loggedIn(request, response, next) {
@@ -14,12 +16,71 @@ function loggedIn(request, response, next) {
   }
 }
 
+router.get('/students/videoChat', loggedIn, async function(request, response) {
+  let permission = await Student.getPermissions(request.user._json.email)
+  try {
+    let studentName = request.user._json.email;
+    let counselorName = await Student.getCounselor(studentName)
+    let roomID = uuidv4();
+    console.log("hello " + roomID);
+    Student.setRoomID(studentName, roomID);
+    try {
+      response.status(200);
+      response.setHeader('Content-Type', 'text/html')
+      response.render("student/rooms", {
+        user: request.user,
+        counselor: counselorName,
+        studentName: studentName,
+        permission: permission,
+        roomID: roomID
+    });
+  }
+    catch (err) {
+         console.error(err);
+      }
+    } catch (err) {
+           console.error(err);
+      }
+
+});
+
+
+router.get('/students/videoChat/:roomID', loggedIn, async function(request, response) {
+  let permission = await Student.getPermissions(request.user._json.email)
+  let roomID = request.params.roomID;
+
+  
+  try {
+    let studentName = request.user._json.email;
+    let counselorName = await Student.getCounselor(studentName)
+    let roomID = uuidv4();
+    console.log("hello " + roomID);
+    Student.setRoomID(studentName, roomID);
+    try {
+      response.status(200);
+      response.setHeader('Content-Type', 'text/html')
+      response.render("student/rooms", {
+        user: request.user,
+        counselor: counselorName,
+        studentName: studentName,
+        permission: permission,
+        roomID: roomID
+    });
+  }
+    catch (err) {
+         console.error(err);
+      }
+    } catch (err) {
+           console.error(err);
+      }
+
+});
+
 
 router.get('/students', loggedIn, async function(request, response) {
   let permission = await Student.getPermissions(request.user._json.email)
   try {
     let studentName = request.user._json.email;
-  let permission = await Student.getPermissions(request.user._json.email)
 
   let theTime;
   try {
@@ -42,12 +103,10 @@ router.get('/students', loggedIn, async function(request, response) {
       time: theTime,
       permission: permission
     });
-  }
-  catch (err) {
+  } catch (err) {
          console.error(err);
       }
-    }
-    catch (err) {
+    } catch (err) {
            console.error(err);
         }
 });
