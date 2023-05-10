@@ -1,4 +1,4 @@
-body {
+/* body {
   background-color: #ffffff;
   font-size: 18px;
   color: #000080;
@@ -72,17 +72,17 @@ img {
 footer {
   font-size: 50%;
   text-align: center;
-}
+} */
 
 
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap");
+/* @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap"); */
 
-:root {
+important :root {
   --main-darklg: #1d2635;
   --main-dark: #161d29;
   --primary-color: #2f80ec;
   --main-light: #eeeeee;
-  font-family: "Poppins", sans-serif;
+  /* font-family: "Poppins", sans-serif; */
 }
 
 * {
