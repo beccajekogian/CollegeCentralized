@@ -2,6 +2,8 @@ const express = require('express'),
   router = express.Router();
 const session = require('express-session');
 const passport = require('passport');
+const Log = require('../models/log_model');
+
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 const KEYS = require('../config/keys.json');
 //keeping our secrets out of our main application is a security best practice
@@ -58,6 +60,8 @@ router.get('/auth/google/callback',
   }),
   function(request, response) {
     console.log(userProfile);
+    let email = request.user._json.email;
+    Log.trackLogin(email);
     response.redirect('/');
   });
 

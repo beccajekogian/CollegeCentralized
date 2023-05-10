@@ -9,8 +9,6 @@ exports.getStudents = async function(counselorEmail){
     let studentName = students[student]["studentName"];
     if (students[student]["counselorEmail"] == counselorEmail){
       counselors[counselorEmail]["studentsList"][studentName] = studentProfile;
-      console.log(counselors[counselorEmail]["studentsList"][studentName]);
-      //console.log("yup"+ counselors[counselorEmail]["studentsList"][studentName]);
     }
   }
   return counselors[counselorEmail]["studentsList"];
@@ -65,8 +63,15 @@ exports.updateSupplement =  async function (supplementID, newContent){
 //only counselors can be admin
 exports.isAdmin = function(name){
   let counselors = JSON.parse(fs.readFileSync(__dirname+'/../data/counselors.json'));
+  if(counselors[name].privileges == 'admin') return true;
   if(counselors[name]) return true;
   else return false;
+}
+
+exports.makeAdmin = function(name){
+  let counselors = JSON.parse(fs.readFileSync(__dirname+'/../data/counselors.json'));
+  counselors[name].privileges = 'admin';
+  fs.writeFileSync(__dirname+'/../data/counselors.json', JSON.stringify(counselors));
 }
 
 

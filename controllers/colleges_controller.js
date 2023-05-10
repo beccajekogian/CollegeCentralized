@@ -6,7 +6,19 @@ const express = require('express'),
   const College = require('../models/college_model');
   const Counselor = require('../models/counselor_model');
 
-router.get('/colleges', async function(request, response) {
+
+  function loggedIn(request, response, next) {
+    if (request.user) {
+      next();
+    } else {
+      response.redirect('/login');
+    }
+  }
+
+
+router.get('/colleges', loggedIn, async function(request, response) {
+  let permission = await Student.getPermissions(request.user._json.email)
+  try {
     let colleges = await College.getAllColleges();
     try {
       console.log(colleges);
@@ -14,21 +26,27 @@ router.get('/colleges', async function(request, response) {
       response.setHeader('Content-Type', 'text/html')
       response.render("college/colleges", {
         colleges: colleges,
-        user: request.user
+        user: request.user,
+        permission: permission
       });
     } catch (err) {
+           console.error(err);
+    }
+  } catch (err) {
            console.error(err);
     }
 
 });
 
-router.get('/colleges/college/:collegeName', async function(request, response) {
-
+router.get('/colleges/college/:collegeName', loggedIn, async function(request, response) {
+  let permission = await Student.getPermissions(request.user._json.email)
+  try {
     let collegeName = request.params.collegeName;
 
     console.log("i love how this works "+ collegeName);
 
     let college = await College.getCollege(collegeName);
+    let permission = await Student.getPermissions(request.user._json.email)
 
     try{
       console.log("amazing " + college);
@@ -41,7 +59,8 @@ router.get('/colleges/college/:collegeName', async function(request, response) {
         response.render("college/collegeDetails", {
           data: college,
           user: request.user,
-          supplements: supplements
+          supplements: supplements,
+          permission:permission
         });
       } catch (err) {
              console.error(err);
@@ -50,25 +69,32 @@ router.get('/colleges/college/:collegeName', async function(request, response) {
     } catch (err) {
            console.error(err);
     }
+  } catch (err) {
+         console.error(err);
+  }
 
 });
 
 
-router.get('/colleges/new', function(request, response) {
-  console.log("you are good");
+router.get('/colleges/new', loggedIn, async function(request, response) {
+
+  let permission = await Student.getPermissions(request.user._json.email)
+  try {
+    console.log("you are good");
     response.status(200);
     response.setHeader('Content-Type', 'text/html')
     response.render("college/createCollege",{
-      user: request.user
+      user: request.user,
+      permission: permission
     });
+  }
+  catch (err) {
+         console.error(err);
+  }
 });
 
 router.post('/colleges', function(request, response) {
     let collegeName = request.body.collegeName;
-    console.log("yummmmmmy" + collegeName);
-    //let applicationTypes = request.body.collegeName;
-    //let edDueDate = request.body.EDDueDate;
-    //let regDueDate = request.body.regDueDate;
 
     if(collegeName){
       College.createCollege(collegeName);
@@ -79,31 +105,40 @@ router.post('/colleges', function(request, response) {
 });
 
 //create supplement
-router.get('/colleges/supplement/new', async function(request, response) {
+router.get('/colleges/supplement/new', loggedIn, async function(request, response) {
+  let permission = await Student.getPermissions(request.user._json.email)
+  try {
       let colleges = await College.getAllColleges();
+
       try{
-        console.log("these are: " + colleges);
         response.status(200);
         response.setHeader('Content-Type', 'text/html')
         response.render("college/createSupplement", {
           data: colleges,
-          user: request.user
+          user: request.user,
+          permission: permission
         });
       }
       catch (err) {
              console.error(err);
       }
+    }
+    catch (err) {
+           console.error(err);
+    }
 
 
   //  response.render("/colleges/"+collegeName+"/createSupplement"); // fix this
 });
 
-router.post('/colleges/supplement/new', async function(request, response) {
+router.post('/colleges/supplement/new', loggedIn, async function(request, response) {
     let collegeName = request.body.collegeName;
     let supplementID = uuidv4();
     let prompt = request.body.prompt;
     let wordMin =  request.body.wordMin;
     let wordMax =  request.body.wordMax;
+    let permission = await Student.getPermissions(request.user._json.email)
+    try {
 
     if(collegeName && supplementID && prompt && wordMin && wordMax){
       College.createSupplement(collegeName, supplementID, prompt, wordMin, wordMax);
@@ -113,6 +148,10 @@ router.post('/colleges/supplement/new', async function(request, response) {
     }else{
       response.redirect('/error?code=400');
     }
+  }
+  catch (err) {
+         console.error(err);
+  }
 });
 
 
