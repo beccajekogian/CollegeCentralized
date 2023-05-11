@@ -1,0 +1,55 @@
+<%- include('../partials/header', {title:"chat", permission: permission}) -%>
+
+
+<html>
+<head>
+  <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+  <div id="messages">
+   <h3>Messages</h3>
+   <textarea id="messagesDisplay" name="story"
+          rows="20" cols="50">
+  </textarea><br>
+  <input type="text" id="messageInput"><button type="button" id="sendButton">Send</button><br>
+
+  </div>
+  <span id="numClientsDisplay">Participants: 0<span>
+  <script>
+    let socket = io.connect('/');//the default namespace
+    socket.emit('connectionEvent', {email:'<%=email%>'});
+
+    socket.on('announcement', function(data) {
+        console.log("data " + data);
+        let mDisplay = document.getElementById('messagesDisplay');
+        let text ="";
+        if(data.email)
+           text = data.email+": "+data.message+"\n";
+        else
+           text = data.message+"\n";
+        mDisplay.value +=text;
+    });
+
+    socket.on('connectionEvent', function(data) {
+        //keep track of the current number of participants in the numClientsDisplay span
+        let numClientsDisplay = document.getElementById('numClientsDisplay');
+        let text = "Participants: " + data.numClients;
+        numClientsDisplay.innerText = text;
+        let mDisplay = document.getElementById('messagesDisplay');
+
+        text = data.email+": "+data.message+"\n";
+
+        mDisplay.value =  mDisplay.value.trim()+text;
+    });
+
+    document.getElementById("sendButton").addEventListener('click', function(){
+      let messageData = document.getElementById("messageInput").value;
+      console.log("sending: "+messageData);
+      socket.emit('announcement', { email:'<%=email%>', message: messageData });
+    });
+
+</script>
+</body>
+</html>
+
+<%- include('../partials/footer') -%>

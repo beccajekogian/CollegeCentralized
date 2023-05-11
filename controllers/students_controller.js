@@ -6,13 +6,13 @@ const College = require('../models/college_model');
 const Counselor = require('../models/counselor_model');
 const { v4: uuidv4 } = require('uuid');
 uuidv4(); // ⇨ '1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed'
-const io = require( "socket.io" )();
-const socketapi = {
-    io: io
-};
+// const io = require( "socket.io" )();
+// const socketapi = {
+//     io: io
+// };
 
 
-const ExpressPeerServer = require('peer').ExpressPeerServer
+//const ExpressPeerServer = require('peer').ExpressPeerServer
 
 
 
@@ -23,19 +23,22 @@ function loggedIn(request, response, next) {
     response.redirect('/login');
   }
 }
+//
+// io.on('connection', function(socket){
+//   userID = request.user._json.email;
+//   socket.on('join-room', function(roomID, userID){
+//     console.log("roomid: " + roomID)
+//       socket.join(roomID);
+//       socket.to(roomID).broadcast.emit('user-connected', userID);
+//     });
+//
+//     socket.on('disconnect', function(){
+//         socket.broadcast.emit('user-disconnected', userID);
+//     })
+// });
+//
+// module.exports = socketapi;
 
-io.on('connection', function(socket){
-  userID = request.user._json.email;
-  socket.on('join-room', function(roomID, userID){
-    console.log("roomid: " + roomID)
-      socket.join(roomID);
-      socket.to(roomID).broadcast.emit('user-connected', userID);
-    });
-
-    socket.on('disconnect', function(){
-        socket.broadcast.emit('user-disconnected', userID);
-    })
-});
 
 router.get('/students/videoChat', loggedIn, async function(request, response) {
   let permission = await Student.getPermissions(request.user._json.email)
@@ -60,6 +63,32 @@ router.get('/students/videoChat', loggedIn, async function(request, response) {
          console.error(err);
       }
 
+});
+
+
+router.get('/students/chat', loggedIn, async function(request, response) {
+  let permission = await Student.getPermissions(request.user._json.email)
+  try {
+    let studentName = request.user._json.email;
+    //let counselorName = await Student.getCounselor(studentName)
+    //let roomID = uuidv4();
+    //console.log("hello " + roomID);
+    //Student.setRoomID(studentName, roomID);
+
+      response.status(200);
+      response.setHeader('Content-Type', 'text/html')
+      response.render("student/chat", {
+        user: request.user,
+        email: studentName,
+        //counselor: counselorName,
+        studentName: studentName,
+        permission: permission,
+        //roomID: roomID
+    });
+  }
+    catch (err) {
+         console.error(err);
+      }
 
 });
 

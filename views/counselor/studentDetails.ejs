@@ -7,7 +7,6 @@
     <tr>
       <th> School </th>
       <th> Application Plan</th>
-      <th> Due Date</th>
     </tr>
 
   <% for (college in colleges) { %>
@@ -15,7 +14,6 @@
     <tr>
       <td><a href="/counselors/counselor/<%=student%>/<%=colleges[college]["collegeName"]%>"><%=colleges[college]["collegeName"]%></a></td>
       <td><%=colleges[college]["applicationType"]%></td>
-      <td><%=colleges[college].dueDate%></td>
     </tr>
 <%}%>
 </table>

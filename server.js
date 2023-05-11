@@ -2,13 +2,15 @@
 const express = require('express');
 const ejs = require('ejs');
 const methodOverride = require('method-override');
+const app = express();
+let server = require('http').Server(app);
+let io = require('socket.io')(server);
 
 const ExpressPeerServer = require('peer').ExpressPeerServer
 
 
 
 //..............Create an Express server object..................//
-const app = express();
 
 //..............Apply Express middleware to the server object....//
 app.use(express.json()); //Used to parse JSON bodies (needed for POST requests)
@@ -28,6 +30,9 @@ app.use(require('./controllers/students_controller'));
 app.use(require('./controllers/counselors_controller'));
 app.use(require('./controllers/colleges_controller'));
 app.use(require('./controllers/admin_controller'));
+let socketapi =require('./controllers/socketConnections');
+socketapi.io.attach(server);//attach sockets to the server
+
 
 
 
@@ -37,6 +42,6 @@ app.use("", function(request, response) {
 
 //..............Start the server...............................//
 const port = process.env.PORT || 3000;
-app.listen(port, function() {
+server.listen(port, function() {
   console.log('Server started at http://localhost:'+port+'.')
 });
