@@ -59,7 +59,7 @@ router.get('/auth/google/callback',
     failureRedirect: '/error?code=401'
   }),
   function(request, response) {
-    console.log(userProfile);
+    //console.log(userProfile);
     let email = request.user._json.email;
     Log.trackLogin(email);
     response.redirect('/');

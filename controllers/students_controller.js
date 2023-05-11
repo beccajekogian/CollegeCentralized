@@ -11,13 +11,8 @@ const socketapi = {
     io: io
 };
 
-//const ExpressPeerServer = require(“peer”);
 
-// const { ExpressPeerServer } = require(“peer”);
-// const peerServer = ExpressPeerServer(server, {
-// debug: true,
-// });
-// app.use(“/peerjs”, peerServer);
+const ExpressPeerServer = require('peer').ExpressPeerServer
 
 
 
@@ -36,22 +31,26 @@ io.on('connection', function(socket){
       socket.join(roomID);
       socket.to(roomID).broadcast.emit('user-connected', userID);
     });
+
+    socket.on('disconnect', function(){
+        socket.broadcast.emit('user-disconnected', userID);
+    })
 });
 
 router.get('/students/videoChat', loggedIn, async function(request, response) {
   let permission = await Student.getPermissions(request.user._json.email)
   try {
     let studentName = request.user._json.email;
-    let counselorName = await Student.getCounselor(studentName)
+    //let counselorName = await Student.getCounselor(studentName)
     let roomID = uuidv4();
     console.log("hello " + roomID);
-    Student.setRoomID(studentName, roomID);
-    try {
+    //Student.setRoomID(studentName, roomID);
+
       response.status(200);
       response.setHeader('Content-Type', 'text/html')
       response.render("student/rooms", {
         user: request.user,
-        counselor: counselorName,
+        //counselor: counselorName,
         studentName: studentName,
         permission: permission,
         roomID: roomID
@@ -60,9 +59,7 @@ router.get('/students/videoChat', loggedIn, async function(request, response) {
     catch (err) {
          console.error(err);
       }
-    } catch (err) {
-           console.error(err);
-      }
+
 
 });
 
@@ -70,7 +67,7 @@ router.get('/students/videoChat', loggedIn, async function(request, response) {
 router.get('/students/videoChat/room', loggedIn, async function(request, response) {
   let permission = await Student.getPermissions(request.user._json.email)
   // let roomID = request.params.roomID;
-  //let studentName = request.user._json.email;
+  let studentName = request.user._json.email;
 
   let roomID = await Student.getRoomID(studentName);
 
@@ -117,7 +114,6 @@ router.get('/students', loggedIn, async function(request, response) {
    }
   let list = await Student.getCollegeList(studentName);
   try{
-    //console.log("yes " + list[0]["collegeName"]);
     response.status(200);
     response.setHeader('Content-Type', 'text/html')
     response.render("student/collegeList", {
@@ -161,7 +157,6 @@ catch (err) {
 
 router.post('/students', loggedIn, async function(request, response) {
     let collegeName = request.body.collegeName;
-    console.log("collegeName " + collegeName);
 
     let studentName = request.user._json.email;
     let applicationType = request.body.applicationType;
@@ -195,14 +190,12 @@ router.post('/students', loggedIn, async function(request, response) {
 router.get('/students/:collegeName', loggedIn, async function(request, response) {
   let studentName = request.user._json.email;
   let collegeName = request.params.collegeName;
-  console.log("collegeName " + collegeName);
 
   let supplements = await Student.getSupplements(studentName, collegeName);
   try {
   let permission = await Student.getPermissions(request.user._json.email)
 
   try{
-    //console.log("nice " + supplements);
     response.status(200);
     response.setHeader('Content-Type', 'text/html')
     response.render("student/collegeDetails", {
@@ -225,16 +218,13 @@ router.get('/students/:collegeName', loggedIn, async function(request, response)
 router.get('/students/:collegeName/:supplementID/edit', loggedIn, async function(request, response) {
   let studentName = request.user._json.email;
   let collegeName = request.params.collegeName;
-  console.log("collegeName " + collegeName);
   let supplementID = request.params.supplementID;
   let supplement = await Student.getSupplement(studentName, collegeName, supplementID);
   try {
   let permission = await Student.getPermissions(request.user._json.email)
 
-  //console.log("hello " + supplement);
 
   try{
-    console.log("holy  " + supplement);
     response.status(200);
     response.setHeader('Content-Type', 'text/html')
     response.render("student/supplementDetails", {
@@ -257,7 +247,6 @@ catch (err) {
 router.post('/students/:collegeName/:supplementID', loggedIn, async function(request, response) {
   let studentName = request.user._json.email;
   let collegeName = request.params.collegeName;
-  console.log("collegeName " + collegeName);
 
   let supplementID = request.params.supplementID;
   let content = request.body.content;

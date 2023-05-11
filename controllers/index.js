@@ -8,9 +8,9 @@ const College = require('../models/college_model');
 
 router.get('/', function(request, response) {
 
-  console.log(request.user); //Passport adds user to the Request object if loggedIn
+  //console.log(request.user); //Passport adds user to the Request object if loggedIn
   //console.log(request.user._json.email); //Passport adds user to the Request object if loggedIn
-  console.log(request.headers); //Encrypted session info is sent as a request header
+  //console.log(request.headers); //Encrypted session info is sent as a request header
 
   response.status(200);
   response.setHeader('Content-Type', 'text/html')

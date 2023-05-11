@@ -23,10 +23,8 @@ router.get('/trackInfo', loggedIn, async function(request, response) {
   if (Counselor.isAdmin(adminName) === true){
     console.log(adminName + "has acsess");
     let logins = await Admin.getAllLogins();
-    console.log("hey "+ logins);
 
     try{
-      console.log("there "+ logins);
       response.status(200);
       response.setHeader('Content-Type', 'text/html')
       response.render("admin/loginDetails", {

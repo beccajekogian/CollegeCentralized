@@ -21,7 +21,6 @@ router.get('/colleges', loggedIn, async function(request, response) {
   try {
     let colleges = await College.getAllColleges();
     try {
-      console.log(colleges);
       response.status(200);
       response.setHeader('Content-Type', 'text/html')
       response.render("college/colleges", {
@@ -43,17 +42,15 @@ router.get('/colleges/college/:collegeName', loggedIn, async function(request, r
   try {
     let collegeName = request.params.collegeName;
 
-    console.log("i love how this works "+ collegeName);
 
     let college = await College.getCollege(collegeName);
     let permission = await Student.getPermissions(request.user._json.email)
 
     try{
-      console.log("amazing " + college);
 
       let supplements = await College.getSupplements(collegeName);
       try{
-        console.log("hey there " + supplements);
+
         response.status(200);
         response.setHeader('Content-Type', 'text/html')
         response.render("college/collegeDetails", {
@@ -80,7 +77,6 @@ router.get('/colleges/new', loggedIn, async function(request, response) {
 
   let permission = await Student.getPermissions(request.user._json.email)
   try {
-    console.log("you are good");
     response.status(200);
     response.setHeader('Content-Type', 'text/html')
     response.render("college/createCollege",{

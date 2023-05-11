@@ -2,6 +2,8 @@
   "rebecca.jekogian23@trinityschoolnyc.org": {
     "email": "rebecca.jekogian23@trinityschoolnyc.org",
     "permission": "admin",
+    "roomID": "",
+
     "lastName": "gonzalez",
     "toDoList": {
       "rebecca.jekogian23@trinityschoolnyc.org": {
@@ -19,5 +21,30 @@
     "studentsList": {
 
     }
+  },
+
+
+  "rjekogian@gmail.com": {
+    "email": "rjekogian@gmail.com",
+    "permission": "counselor",
+    "roomID": "",
+    "lastName": "jekogian",
+    "toDoList": {
+      "rebecca.jekogian23@trinityschoolnyc.org": {
+        "studentEmail": "rebecca.jekogian23@trinityschoolnyc.org",
+        "collegeName": "Northwestern",
+        "supplementID": 101001001010,
+        "prompt": "why us?",
+        "content": "hey",
+        "wordMax": 300,
+        "wordMin": 10,
+        "wordCount": 1,
+        "dateReceived": "date"
+      }
+    },
+    "studentsList": {
+
+    }
   }
+
 }
